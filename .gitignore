@@ -1,0 +1,11 @@
+seccomp_profile.json
+strace_statistics
+
+.eggs/
+cerber.egg-info/
+*__pycache__*
+build/
+
+.tox/
+*.pyc
+dist/
