@@ -1,9 +1,11 @@
 CHANGES
 =======
 
-0.2.0
+0.2.1
 -----
 
+* fix bad behavior on element not found
+* fix documentation examples
 * remove tick from list results
 * using readme at markdown format on pypi
 
