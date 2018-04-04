@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+0.1.1
+-----
+
+* remove tick from list results
+* using readme at markdown format on pypi
+
 0.1.0
 -----
 
