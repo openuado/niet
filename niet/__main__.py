@@ -38,7 +38,7 @@ def get(data, keywords):
         for keyword in keywords:
             cursor = cursor[keyword]
             if isinstance(cursor, list):
-                cursor = " ".join(["'{}'".format(el) for el in  cursor])
+                cursor = " ".join(["{}".format(el) for el in  cursor])
         return cursor
     except KeyError as err:
         print(str(err))
