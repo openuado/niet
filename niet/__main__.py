@@ -39,6 +39,8 @@ def get(data, keywords):
             cursor = cursor.get(keyword)
             if isinstance(cursor, list):
                 cursor = " ".join(["{}".format(el) for el in cursor])
+        if not cursor:
+            raise KeyError()
         return cursor
     except (KeyError, AttributeError):
         print("Element not found: {research}".format(
