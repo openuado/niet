@@ -96,6 +96,34 @@ $ niet your-file.yaml "project.meta.name"
 
 ## Tests
 
+You can try niet by using the samples provided with the project sources code.
+
+Sample example:
+```yaml
+# tests/samples/sample.yaml
+project:
+    meta:
+        name: project-sample
+        tags:
+          - example
+          - sample
+          - for
+          - testing
+          - purpose
+```
+
+Retrieve the project name:
 ```sh
-niet tests/samples/samples.yaml project.meta.name
+$ niet tests/samples/sample.yaml project.meta.name
+project-sample
+```
+
+Deal with list of items
+```sh
+$ for el in $(niet tests/samples/sample.yaml project.meta.tags); do echo ${el}; done
+example
+sample
+for
+testing
+purpose
 ```

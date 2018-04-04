@@ -1,3 +1,10 @@
 project:
     meta:
         name: project-sample
+        tags:
+          - example
+          - sample
+          - for
+          - testing
+          - purpose
+
