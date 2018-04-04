@@ -14,6 +14,7 @@ $ pip install niet
 
 Consider the yaml file with the following content:
 ```yaml
+# /path/to/your/file.yaml
 project:
     meta:
         name: my-project
@@ -31,7 +32,7 @@ my-project
 $ niet /path/to/your/file.yaml "project.foo"
 bar
 $ niet /path/to/your/file.yaml "project.list-items"
-'item1' 'item2' 'item3'
+item1 item2 item3
 $ # assign return value to shell variable
 $ NAME=$(niet /path/to/your/file.yaml "project.meta.name")
 $ echo $NAME
@@ -64,7 +65,7 @@ my-project
 $ niet /path/to/your/file.json "project.foo"
 bar
 $ niet /path/to/your/file.json "project.list-items"
-'item1' 'item2' 'item3'
+item1 item2 item3
 $ # assign return value to shell variable
 $ NAME=$(niet /path/to/your/file.json "project.meta.name")
 $ echo $NAME
