@@ -1,11 +1,18 @@
 CHANGES
 =======
 
-0.2.1
+0.2.2
 -----
 
+* fix bad behavior that still to occur on not found
+
+0.2.1
+-----
 * fix bad behavior on element not found
 * fix documentation examples
+
+0.2.0
+-----
 * remove tick from list results
 * using readme at markdown format on pypi
 
