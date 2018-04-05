@@ -1,5 +1,8 @@
 # niet
 
+[![Build Status](https://travis-ci.org/gr0und-s3ct0r/niet.svg?branch=devel)](https://travis-ci.org/gr0und-s3ct0r/niet)
+![PyPI](https://img.shields.io/pypi/v/niet.svg)
+
 Get data from yaml file directly in your shell
 
 ## Install
@@ -7,6 +10,10 @@ Get data from yaml file directly in your shell
 ```sh
 $ pip install niet
 ```
+
+## Requirements
+
+- Python 2.7+
 
 ## Usage
 

@@ -1,0 +1,30 @@
+language: python
+cache:
+  - pip
+python:
+  - '2.7'
+  - '3.3'
+  - '3.4'
+  - '3.5'
+  - 3.5-dev
+  - '3.6'
+  - 3.6-dev
+before_install:
+  - pip install -U pip
+  - pip install -U setuptools
+  - pip install -U wheel
+install:
+  - pip install tox-travis .[test]
+script:
+  - python setup.py install
+  - niet tests/samples/sample.yaml project.meta.name
+  - niet tests/samples/sample.yaml project.meta.tags
+
+deploy:
+  provider: pypi
+  user: 4383
+  password:
+    secure: nCzmcLl34+KqzguQSYO1cWt20RuJ47Xfr7Bawz8ZNzmLf/lC5w4nPhi58thNdu6uFoGgraHlnK49OviP1H5NnImlxWooVWwWyjvwyKI7zT9FpocTuUphCfrqsMF4q9AjmredaazlFR5zAxA73uHCTX9T0Ehu6qF4jG+o+qqqkiP2UiF0AAyP2xVa2m9J6AMpPGGgSvp0/xJYlVQ9o6uAEafk6xBNJxxDcKWGwwjU9VFfUSC5XUAWIeuWEMqO2AJgBEV8pUVMfLZvaVjx2caq2SBUdFrTPqVYRcXHBE/fS/sdczjRYo0SCG2D8sZdtWUqSozcZ1ct1c1LcQI3bMeoEc7WBh0vk5ej7wqnd6DFp/xqmfhgUQx+UwnT7anl1laDXkmPOQK1xRWJA2aghI57u2jahxUqnS7HlL0S6kS0/SjsV9ar5/l8OjHeTDJylwvLGcvCp839cUgnZ1Yx1+nblqDacAWpUw2P6fXvESpkh1pT7AIcEKsFBUpVEqFByh7CtTIZqp8QOyQJYBznoUPLLRcIORPwIQoEzO2VSRmcaR7Ev6LLDYNqnMb8boRDNlDmWE4JTcYBzByIcNi6LC7KSaSqGYfbugXHTHwXQQxDUBDEkAJVlM3RooRQjAE9HtXtSTAKZYFpu66HdxMIIX0wqiOAXar88cz9GrXqh/T0kBs=
+  on:
+    tags: true
+  distributions: sdist bdist_wheel
