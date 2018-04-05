@@ -1,11 +1,10 @@
-seccomp_profile.json
-strace_statistics
-
-.eggs/
-cerber.egg-info/
+*.eggs/
+niet.egg-info/
 *__pycache__*
 build/
-
 .tox/
 *.pyc
 dist/
+*.swa
+*.swp
+*~
