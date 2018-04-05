@@ -7,10 +7,10 @@
 
 Get data from yaml file directly in your shell
 
-## Install
+## Install or Update niet
 
 ```sh
-$ pip install niet
+$ pip install -U niet
 ```
 
 ## Requirements
