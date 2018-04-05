@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/gr0und-s3ct0r/niet.svg?branch=devel)](https://travis-ci.org/gr0und-s3ct0r/niet)
 ![PyPI](https://img.shields.io/pypi/v/niet.svg)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/niet.svg)
+![PyPI - Status](https://img.shields.io/pypi/status/niet.svg)
 
 Get data from yaml file directly in your shell
 
@@ -94,15 +96,7 @@ else
 fi
 ```
 
-## Tips
-
-You can pass your search with or without quotes like this:
-```sh
-$ niet your-file.yaml project.meta.name
-$ niet your-file.yaml "project.meta.name"
-```
-
-## Tests
+## Examples
 
 You can try niet by using the samples provided with the project sources code.
 
@@ -135,3 +129,21 @@ for
 testing
 purpose
 ```
+
+## Tips
+
+You can pass your search with or without quotes like this:
+```sh
+$ niet your-file.yaml project.meta.name
+$ niet your-file.yaml "project.meta.name"
+```
+
+## Contribute
+
+If you want to contribute to niet [please first read the contribution guidelines](CONTRIBUTING.md)
+
+## Licence
+
+This project is under the MIT License.
+
+[See the license file for more details](LICENSE)
