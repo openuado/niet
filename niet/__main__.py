@@ -8,9 +8,10 @@ import yaml
 
 def argparser():
     parser = argparse.ArgumentParser(
-        description='Read data from yaml or json file')
-    parser.add_argument('file', type=str)
-    parser.add_argument('object', type=str)
+        description='Read data from YAML or JSON file')
+    parser.add_argument('file', type=str,
+        help="JSON or YAML filename")
+    parser.add_argument('object', type=str, help="Path to object")
     args = parser.parse_args()
     return args.file, args.object
 
@@ -52,9 +53,9 @@ def get(data, keywords):
 def main():
     filename, search = argparser()
     if not os.path.isfile(filename):
-        print("Yaml file not found!")
+        print("Error: File {} not found!".format(filename))
         print("Abort!")
-        sys.exit(1)
+        sys.exit(127)
     data = data_parser(filename)
     keywords = search.split(".")
     print(get(data, keywords))
