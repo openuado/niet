@@ -7,16 +7,24 @@ import yaml
 
 
 def argparser():
+    epilog = '''output formats:
+             quotes    Add quotes to result
+             '''
     parser = argparse.ArgumentParser(
-        description='Read data from YAML or JSON file')
+        description='Read data from YAML or JSON file',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=epilog)
     parser.add_argument('file', type=str,
                         help="JSON or YAML filename")
     parser.add_argument('object', type=str,
                         help="Path to object separated by dot (.). \
                         Use '.' to get whole file. \
                         eg: a.b.c")
+    parser.add_argument('-f', '--format', type=str,
+                        choices=['quotes'],
+                        help="output format")
     args = parser.parse_args()
-    return args.file, args.object
+    return args.file, args.object, args.format
 
 
 def data_parser(filename):
@@ -43,8 +51,6 @@ def get(data, keywords):
             return cursor
         for keyword in keywords:
             cursor = cursor.get(keyword)
-            if isinstance(cursor, list):
-                cursor = " ".join(["{}".format(el) for el in cursor])
         if not cursor:
             raise KeyError()
         return cursor
@@ -55,8 +61,17 @@ def get(data, keywords):
         sys.exit(1)
 
 
+def print_result(res, out_format):
+    if isinstance(res, list):
+        if 'quotes' == out_format:
+            res = " ".join(["'{}'".format(el) for el in res])
+        else:
+            res = " ".join(["{}".format(el) for el in res])
+    print(res)
+
+
 def main():
-    filename, search = argparser()
+    filename, search, out_format = argparser()
     if not os.path.isfile(filename):
         print("Error: File {} not found!".format(filename))
         print("Abort!")
@@ -66,7 +81,8 @@ def main():
         keywords = search.split(".")
     else:
         keywords = search
-    print(get(data, keywords))
+    result = get(data, keywords)
+    print_result(result, out_format)
 
 
 if __name__ == "__main__":
