@@ -11,7 +11,10 @@ def argparser():
         description='Read data from YAML or JSON file')
     parser.add_argument('file', type=str,
         help="JSON or YAML filename")
-    parser.add_argument('object', type=str, help="Path to object")
+    parser.add_argument('object', type=str, 
+        help="Path to object separated by dot (.). \
+            Use '.' to get whole file. \
+            eg: a.b.c")
     args = parser.parse_args()
     return args.file, args.object
 
@@ -36,6 +39,8 @@ def data_parser(filename):
 def get(data, keywords):
     try:
         cursor = data
+        if '.' == keywords:
+            return cursor
         for keyword in keywords:
             cursor = cursor.get(keyword)
             if isinstance(cursor, list):
@@ -57,7 +62,10 @@ def main():
         print("Abort!")
         sys.exit(127)
     data = data_parser(filename)
-    keywords = search.split(".")
+    if not search == '.':
+        keywords = search.split(".")
+    else:
+        keywords = search
     print(get(data, keywords))
 
 
