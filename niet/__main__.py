@@ -10,11 +10,11 @@ def argparser():
     parser = argparse.ArgumentParser(
         description='Read data from YAML or JSON file')
     parser.add_argument('file', type=str,
-        help="JSON or YAML filename")
-    parser.add_argument('object', type=str, 
-        help="Path to object separated by dot (.). \
-            Use '.' to get whole file. \
-            eg: a.b.c")
+                        help="JSON or YAML filename")
+    parser.add_argument('object', type=str,
+                        help="Path to object separated by dot (.). \
+                        Use '.' to get whole file. \
+                        eg: a.b.c")
     args = parser.parse_args()
     return args.file, args.object
 

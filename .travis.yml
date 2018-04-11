@@ -13,9 +13,11 @@ before_install:
   - pip install -U pip
   - pip install -U setuptools
   - pip install -U wheel
+  - pip install flake8
 install:
   - pip install tox-travis .[test]
 script:
+  - flake8 niet
   - python setup.py install
   - niet tests/samples/sample.yaml project.meta.name
   - niet tests/samples/sample.yaml project.meta.tags
