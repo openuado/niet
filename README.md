@@ -81,6 +81,45 @@ $ echo $NAME
 my-project
 ```
 
+### Output formats 
+You can change the output format using the -f or --format optional 
+argument. 
+
+By default, niet detect the input format and display complex objects
+in the same format. If the object is a list or a value, newline output
+format will be used.
+
+Output formats are: 
+  - spaces
+  - quotes
+  - newline
+  - yaml
+  - json
+
+#### spaces
+Spaces output format print all values of a list or a single value in one line.
+ All values are separated by a space. This format cannot so be used with values
+containing some spaces. This is usefull in a shell for loop.
+
+#### quotes
+Quotes output format print all values of a list or a single value in one line.
+All values are quoted with a single quote ans separated by a space.
+
+#### newline
+Newline output format print one value of a list or a single value per line.
+This format is usefull using shell while read loop. eg:
+```sh
+while read value: do
+	echo $value
+done < $(niet --format newline your-file.json project.list-items)
+```
+ 
+#### yaml
+Yaml output format force output to be in YAML regardless the input file format.
+
+#### json
+Json output format force output to be in JSON regardless the input file format.
+
 ### Deal with errors
 
 When your JSON file content are not valid niet display an error and exit

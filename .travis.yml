@@ -20,6 +20,12 @@ script:
   - python setup.py install
   - niet tests/samples/sample.yaml project.meta.name
   - niet tests/samples/sample.yaml project.meta.tags
+  - niet tests/samples/test.json .
+  - niet -f quotes tests/samples/sample.yaml project.meta.tags
+  - niet -f spaces tests/samples/sample.yaml project.meta.tags
+  - niet --format newline tests/samples/sample.yaml project.meta.tags
+  - niet --format yaml tests/samples/sample.yaml project.meta.tags
+  - niet --format json tests/samples/sample.yaml project.meta.tags
 
 deploy:
   - provider: pypi
