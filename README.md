@@ -90,20 +90,34 @@ in the same format. If the object is a list or a value, newline output
 format will be used.
 
 Output formats are: 
-  - spaces
-  - quotes
+  - ifs
+  - squote
+  - dquote
   - newline
   - yaml
   - json
 
-#### spaces
-Spaces output format print all values of a list or a single value in one line.
- All values are separated by a space. This format cannot so be used with values
-containing some spaces. This is usefull in a shell for loop.
+#### ifs
+Ifs output format print all values of a list or a single value in one line.
+ All values are separated by the content of IFS environment variable if defined,
+space otherwise. This format cannot so be used with values. This is usefull in a shell 
+for loop, but your content must, of course, don't contain IFS value.
+```sh
+OIFS="$IFS"
+IFS="|"
+for i in $(niet tests/samples/sample.yaml project.list-items -f ifs); do
+	echo $i
+done
+IFS="$OIFS"
+```
 
-#### quotes
-Quotes output format print all values of a list or a single value in one line.
-All values are quoted with a single quote ans separated by a space.
+#### squote
+Squotes output format print all values of a list or a single value in one line.
+All values are quoted with single quotes and are separated by IFS value.
+
+#### dquote
+Dquotes output format print all values of a list or a single value in one line.
+All values are quoted with a double quotes and are separated by IFS value.
 
 #### newline
 Newline output format print one value of a list or a single value per line.
