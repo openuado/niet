@@ -1,20 +1,92 @@
 #!/usr/bin/python
 import argparse
 import json
-import sys
 import os.path
+import sys
+from future.utils import viewitems
 import yaml
+
+
+IFS = os.getenv('IFS', ' ')
+
+
+# Output functions
+def out_print_squote(res):
+    if isinstance(res, list):
+        res = IFS.join(["'{}'".format(el) for el in res])
+    elif (isinstance(res, str) or isinstance(res, int)):
+        res = "".join("'{}'".format(res))
+    print(res)
+
+
+def out_print_dquote(res):
+    if isinstance(res, list):
+        res = IFS.join(["\"{}\"".format(el) for el in res])
+    elif (isinstance(res, str) or isinstance(res, int)):
+        res = "".join("\"{}\"".format(res))
+    print(res)
+
+
+def out_print_ifs(res):
+    if isinstance(res, list):
+        res = IFS.join(["{}".format(el) for el in res])
+    print(res)
+
+
+def out_print_newline(res):
+    if isinstance(res, list):
+        print('\n'.join(res))
+    else:
+        print(res)
+
+
+def out_print_yaml(res):
+    print(yaml.dump(res, default_flow_style=False))
+
+
+def out_print_json(res):
+    print(json.dumps(res, indent=4))
+
+
+VALID_PRINTERS = {
+    "json": {
+         "cmd": out_print_json,
+         "epilog": "Return object in JSON",
+    },
+    "yaml": {
+         "cmd": out_print_yaml,
+         "epilog": "Return object in YAML",
+    },
+    "newline": {
+         "cmd": out_print_newline,
+         "epilog": "Return all element of a list in a new line",
+    },
+    "ifs": {
+         "cmd": out_print_ifs,
+         "epilog": "Return all elements of a list separated by IFS env var",
+    },
+    "squote": {
+         "cmd": out_print_squote,
+         "epilog": "Add single quotes to result",
+    },
+    "dquote": {
+         "cmd": out_print_dquote,
+         "epilog": "Add double quotes to result",
+    },
+}
+
+
+def get_epilog():
+    epilog = ""
+    for key, value in viewitems(VALID_PRINTERS):
+        epilog += "  {}\t{}\n".format(key, value['epilog'])
+    return epilog
 
 
 # arguments parsing
 def argparser():
-    epilog = '''output formats:
-  spaces    Return all elements of a list separated by spaces
-  quotes    Add quotes to result
-  newline   Return all element of a list in a new line
-  yaml      Return object in YAML
-  json      Return object in JSON
-'''
+    epilog = '''output formats:\n{}'''.format(get_epilog())
+
     parser = argparse.ArgumentParser(
         description='Read data from YAML or JSON file',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -26,8 +98,7 @@ def argparser():
                         Use '.' to get whole file. \
                         eg: a.b.c")
     parser.add_argument('-f', '--format', type=str,
-                        choices=['spaces', 'quotes',
-                                 'json', 'yaml', 'newline'],
+                        choices=[key for key in VALID_PRINTERS],
                         help="output format")
     args = parser.parse_args()
     return args.file, args.object, args.format
@@ -71,48 +142,18 @@ def get(data, keywords):
         sys.exit(1)
 
 
-# Output functions
-def out_print_quotes(res):
-    if isinstance(res, list):
-        res = " ".join(["'{}'".format(el) for el in res])
-    print(res)
-
-
-def out_print_spaces(res):
-    if isinstance(res, list):
-        res = " ".join(["{}".format(el) for el in res])
-    print(res)
-
-
-def out_print_newline(res):
-    if isinstance(res, list):
-        print('\n'.join(res))
-    else:
-        print(res)
-
-
-def out_print_yaml(res):
-    print(yaml.dump(res, default_flow_style=False))
-
-
-def out_print_json(res):
-    print(json.dumps(res, indent=4))
-
-
 def print_result(res, out_format, in_format):
-    # for compatibility with python 2 and 3
-    try:
-        basestring
-    except NameError:
-        basestring = str
-
     if out_format is None:
-        if (isinstance(res, list) or isinstance(res, basestring) or
-                isinstance(res, int) or in_format is None):
+        if (isinstance(res, list) or isinstance(res, str) or
+                isinstance(res, int) or
+                in_format is None):
             out_format = "newline"
         else:
             out_format = in_format
-    eval("out_print_{}(res)".format(out_format))
+    try:
+        VALID_PRINTERS[out_format]["cmd"](res)
+    except KeyError:
+        print("Error : Invalid choice")
 
 
 # Main
@@ -120,7 +161,6 @@ def main():
     filename, search, out_format = argparser()
     if not os.path.isfile(filename):
         print("Error: File {} not found!".format(filename))
-        print("Abort!")
         sys.exit(127)
     data, in_format = data_parser(filename)
     if not search == '.':
