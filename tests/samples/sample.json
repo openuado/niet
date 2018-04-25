@@ -1,0 +1,13 @@
+{
+    "project": {
+        "meta": {
+            "name": "my-project"
+        }
+    },
+    "foo": "bar",
+    "list-items": [
+        "item1",
+        "item2",
+        "item3"
+    ]
+}
