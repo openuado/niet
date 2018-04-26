@@ -36,14 +36,14 @@ project:
 
 You can retrieve data from this file by using niet like this:
 ```sh
-$ niet /path/to/your/file.yaml "project.meta.name"
+$ niet /path/to/your/file.yaml ".project.meta.name"
 my-project
-$ niet /path/to/your/file.yaml "project.foo"
+$ niet /path/to/your/file.yaml ".project.foo"
 bar
-$ niet /path/to/your/file.yaml "project.list-items"
+$ niet /path/to/your/file.yaml ".project.list-items"
 item1 item2 item3
 $ # assign return value to shell variable
-$ NAME=$(niet /path/to/your/file.yaml "project.meta.name")
+$ NAME=$(niet /path/to/your/file.yaml ".project.meta.name")
 $ echo $NAME
 my-project
 ```
@@ -100,12 +100,12 @@ Output formats are:
 #### ifs
 Ifs output format print all values of a list or a single value in one line.
  All values are separated by the content of IFS environment variable if defined,
-space otherwise. This format cannot so be used with values. This is usefull in a shell 
+space otherwise. This is usefull in a shell 
 for loop, but your content must, of course, don't contain IFS value.
 ```sh
 OIFS="$IFS"
 IFS="|"
-for i in $(niet tests/samples/sample.yaml project.list-items -f ifs); do
+for i in $(niet tests/samples/sample.yaml .project.list-items -f ifs); do
 	echo $i
 done
 IFS="$OIFS"

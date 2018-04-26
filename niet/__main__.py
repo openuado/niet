@@ -128,10 +128,9 @@ def data_parser(filename):
 def get(data, keywords):
     try:
         cursor = data
-        if '.' == keywords:
-            return cursor
         for keyword in keywords:
-            cursor = cursor.get(keyword)
+            if not '' == keyword:
+                cursor = cursor.get(keyword)
         if not cursor:
             raise KeyError()
         return cursor
@@ -163,10 +162,7 @@ def main():
         print("Error: File {} not found!".format(filename))
         sys.exit(127)
     data, in_format = data_parser(filename)
-    if not search == '.':
-        keywords = search.split(".")
-    else:
-        keywords = search
+    keywords = search.split(".")
     result = get(data, keywords)
     print_result(result, out_format, in_format)
 

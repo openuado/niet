@@ -19,7 +19,9 @@ script:
   - flake8 niet
   - python setup.py install
   - niet tests/samples/sample.yaml project.meta.name
+  - niet tests/samples/sample.yaml .project.meta.name
   - niet tests/samples/sample.yaml project.list-items
+  - niet tests/samples/sample.json .project.list-items
   - niet tests/samples/sample.json .
   - niet -f squote tests/samples/sample.yaml project.list-items
   - niet -f squote tests/samples/sample.yaml project.meta.name
