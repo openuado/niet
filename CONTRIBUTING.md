@@ -88,11 +88,12 @@ If you're hitting a bug in niet or just want to experiment with adding a feature
 
 - [pipenv](https://github.com/kennethreitz/pipenv)
 - [pbr](https://docs.openstack.org/pbr/latest/)
+- [flake8](http://flake8.pycqa.org/en/latest/)
 - python2.7+
 
 #### Cloning
 
-``` command-line
+```shell
 $ git clone https://github.com/gr0und-s3ct0r/niet
 ```
 
@@ -101,22 +102,48 @@ $ git clone https://github.com/gr0und-s3ct0r/niet
 From there, you can navigate into the directory where you've cloned the niet source code,
 create a virtual environment and install all the required dependencies:
 
-``` command-line
+```shell
 $ cd niet
 $ pipenv shell # pip install -U pipenv (if not installed)
 $ pip install -r requirements.txt
+$ pip install -r requirements_dev.txt
 $ python setup.py develop
 ```
 
 #### Make your changes
 
-``` command-line
-$ git checkout -b somefeature
-$ # edit your files
+First create your working branch:
+```shell
+$ git checkout -b somefeature origin/develop
+```
+
+Make our changes:
+```shell
+$ vim <file-to-edit>
 $ git commit -am 'I did some changes'
-$ # in this example we use git-pull-request for make the pull request but
-$ # you can make this manually
-$ git pull-request # pip install -U git-pull-request (if not installed)
+```
+
+#### Ensure everything work fine
+
+Every following checks are automaticaly executed on pull requests so need to
+be sure that all of these checks run successfully before submit your pull request
+on github.
+
+Code formating:
+```shell
+$ flake8 niet tests
+```
+
+### Pull Requests
+
+If everything work fine you can create your pull request.
+
+Before ensure you have [squash your commits](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html).
+
+By using [git-pull-request](https://github.com/jd/git-pull-request):
+```shell
+$ pip install -U git-pull-request # if not installed
+$ git pull-request 
 Forked repository: https://github.com/gr0und-s3ct0r/niet
 Force-pushing branch `somefeature' to remote `github'
 Counting objects: 5, done.
@@ -130,8 +157,6 @@ To https://github.com/gr0und-s3ct0r/niet.git
  Pull-request created: https://github.com/grOund-s3ctOr/niet/pull/33
 ```
 
-### Pull Requests
-
-* Squash your commits.
+Or manually directly from github:
 * Include examples, outputs, etc... whenever possible.
 * Include screenshots and animated GIFs in your pull request whenever possible.
