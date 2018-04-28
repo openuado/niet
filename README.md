@@ -34,6 +34,11 @@ project:
         - item3
 ```
 
+You can [download the previous example](https://gist.githubusercontent.com/4383/53e1599663b369f499aa28e27009f2cd/raw/389b82c19499b8cb84a464784e9c79aa25d3a9d3/file.yaml) locally for testing purpose or use the command line for this:
+```shell
+wget https://gist.githubusercontent.com/4383/53e1599663b369f499aa28e27009f2cd/raw/389b82c19499b8cb84a464784e9c79aa25d3a9d3/file.yaml
+```
+
 You can retrieve data from this file by using niet like this:
 ```sh
 $ niet /path/to/your/file.yaml ".project.meta.name"
@@ -65,6 +70,11 @@ Consider the json file with the following content:
         "item3"
     ]
 }
+```
+
+You can [download the previous example](https://gist.githubusercontent.com/4383/1bab8973474625de738f5f6471894322/raw/0048cd2310df2d98bf4f230ffe20da8fa615cef3/file.json) locally for testing purpose or use the command line for this:
+```shell
+wget https://gist.githubusercontent.com/4383/1bab8973474625de738f5f6471894322/raw/0048cd2310df2d98bf4f230ffe20da8fa615cef3/file.json
 ```
 
 You can retrieve data from this file by using niet like this:
@@ -99,32 +109,73 @@ Output formats are:
 
 #### ifs
 Ifs output format print all values of a list or a single value in one line.
- All values are separated by the content of IFS environment variable if defined,
-space otherwise. This is usefull in a shell 
-for loop, but your content must, of course, don't contain IFS value.
-```sh
+All values are separated by the content of IFS environment variable if defined,
+space otherwise.
+
+Examples (consider the previous [YAML file example](#with-yaml-file)):
+```shell
+$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f ifs
+item1|item2|item3
+$ IFS=" " niet /path/to/your/file.yaml .project.list-items -f ifs
+item1 item2 item3
+$ IFS="@" niet /path/to/your/file.yaml .project.list-items -f ifs
+item1@item2@item3
+```
+
+This is usefull in a shell for loop,
+but your content must, of course, don't contain IFS value:
+```shell
 OIFS="$IFS"
 IFS="|"
-for i in $(niet tests/samples/sample.yaml .project.list-items -f ifs); do
-	echo $i
+for i in $(niet /path/to/your/file.yaml .project.list-items -f ifs); do
+    echo ${i}
 done
-IFS="$OIFS"
+IFS="${OIFS}"
 ```
+
+Previous example provide the following output:
+```sh
+item1
+item2
+item3
+```
+
+For single quoted see [squote](#squote) ouput or [dquote](#dquote) double quoted output with IFS
 
 #### squote
 Squotes output format print all values of a list or a single value in one line.
 All values are quoted with single quotes and are separated by IFS value.
 
+Examples (consider the previous [YAML file example](#with-yaml-file)):
+```shell
+$ # With the default IFS
+$ niet /path/to/your/file.yaml .project.list-items -f squote
+'item1' 'item2' 'item3'
+$ # With a specified IFS
+$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f squote
+'item1'|'item2'|'item3'
+```
+
 #### dquote
 Dquotes output format print all values of a list or a single value in one line.
 All values are quoted with a double quotes and are separated by IFS value.
+
+Examples (consider the previous [YAML file example](#with-yaml-file)):
+```shell
+$ # With the default IFS
+$ niet /path/to/your/file.yaml .project.list-items -f dquote
+'item1' 'item2' 'item3'
+$ # With a specified IFS
+$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f dquote
+"item1"|"item2"|"item3"
+```
 
 #### newline
 Newline output format print one value of a list or a single value per line.
 This format is usefull using shell while read loop. eg:
 ```sh
 while read value: do
-	echo $value
+    echo $value
 done < $(niet --format newline your-file.json project.list-items)
 ```
  
@@ -153,34 +204,34 @@ fi
 
 You can try niet by using the samples provided with the project sources code.
 
+> All the following examples use the sample file available in niet sources code
+at the following location `tests/samples/sample.yaml`.
+
 Sample example:
 ```yaml
 # tests/samples/sample.yaml
 project:
     meta:
-        name: project-sample
-        tags:
-          - example
-          - sample
-          - for
-          - testing
-          - purpose
+        name: my-project
+    foo: bar
+    list-items:
+        - item1
+        - item2
+        - item3
 ```
 
 Retrieve the project name:
 ```sh
 $ niet tests/samples/sample.yaml project.meta.name
-project-sample
+my-project
 ```
 
 Deal with list of items
 ```sh
-$ for el in $(niet tests/samples/sample.yaml project.meta.tags); do echo ${el}; done
-example
-sample
-for
-testing
-purpose
+$ for el in $(niet tests/samples/sample.yaml project.list-items); do echo ${el}; done
+item1
+item2
+item3
 ```
 
 ## Tips
