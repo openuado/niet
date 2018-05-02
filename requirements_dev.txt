@@ -1,2 +1,2 @@
 pbr
-flake8
+tox

@@ -89,6 +89,7 @@ If you're hitting a bug in niet or just want to experiment with adding a feature
 - [pipenv](https://github.com/kennethreitz/pipenv)
 - [pbr](https://docs.openstack.org/pbr/latest/)
 - [flake8](http://flake8.pycqa.org/en/latest/)
+- [tox](https://tox.readthedocs.io/en/latest/)
 - python2.7+
 
 #### Cloning
@@ -114,8 +115,10 @@ $ python setup.py develop
 
 First create your working branch:
 ```shell
-$ git checkout -b somefeature origin/develop
+$ git checkout -b somefeature origin/devel
 ```
+
+> Be sure to create your working branch from `devel` and be sure your devel are up-to-date
 
 Make our changes:
 ```shell
@@ -129,9 +132,19 @@ Every following checks are automaticaly executed on pull requests so need to
 be sure that all of these checks run successfully before submit your pull request
 on github.
 
-Code formating:
+Code formating and PEP8 validation:
 ```shell
-$ flake8 niet tests
+$ tox -e pep8
+```
+
+Unit tests:
+```shell
+$ tox # by default run tests en python 2.7, 3.4, 3.5, 3.6
+```
+
+> Note: If you have just a specific version of python installed on your system, you can test like this:
+```shell
+$ tox -e py35 # test with python 3.5
 ```
 
 ### Pull Requests
@@ -139,6 +152,8 @@ $ flake8 niet tests
 If everything work fine you can create your pull request.
 
 Before ensure you have [squash your commits](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html).
+
+> Be sure to submit your pull request on the upstream `devel` branch!
 
 By using [git-pull-request](https://github.com/jd/git-pull-request):
 ```shell
