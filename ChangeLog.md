@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0
+
+- Read input from stdin or from file
+- Fix CVE-2017-2809
+
 ## 1.2.0
 
 - Add possibility to begin search string by a point eg: .project
