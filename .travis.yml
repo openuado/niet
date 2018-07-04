@@ -17,19 +17,19 @@ install:
 script:
   - tox
   - python setup.py install
-  - niet tests/samples/sample.yaml project.meta.name
-  - niet tests/samples/sample.yaml .project.meta.name
-  - niet tests/samples/sample.yaml project.list-items
-  - niet tests/samples/sample.json .project.list-items
-  - niet tests/samples/sample.json .
-  - niet -f squote tests/samples/sample.yaml project.list-items
-  - niet -f squote tests/samples/sample.yaml project.meta.name
-  - niet -f dquote tests/samples/sample.yaml project.list-items
-  - niet -f dquote tests/samples/sample.yaml project.meta.name
-  - niet -f ifs tests/samples/sample.yaml project.list-items
-  - niet --format newline tests/samples/sample.yaml project.list-items
-  - niet --format yaml tests/samples/sample.yaml project.list-items
-  - niet --format json tests/samples/sample.yaml project.list-items
+  - niet project.meta.name tests/samples/sample.yaml
+  - niet .project.meta.name tests/samples/sample.yaml
+  - niet project.list-items tests/samples/sample.yaml
+  - niet .project.list-items tests/samples/sample.json
+  - niet . tests/samples/sample.json
+  - niet -f squote project.list-items tests/samples/sample.yaml
+  - niet -f squote project.meta.name tests/samples/sample.yaml
+  - niet -f dquote project.list-items tests/samples/sample.yaml
+  - niet -f dquote project.meta.name tests/samples/sample.yaml
+  - niet -f ifs project.list-items tests/samples/sample.yaml
+  - niet --format newline project.list-items tests/samples/sample.yaml
+  - niet --format yaml project.list-items tests/samples/sample.yaml
+  - niet --format json project.list-items tests/samples/sample.yaml
 
 deploy:
   - provider: pypi
@@ -39,12 +39,3 @@ deploy:
     on:
       tags: true
     distributions: sdist bdist_wheel
-
-    #- provider: pypi
-    #- user: 4383
-    #- password:
-    #-   secure: "nR3B3hnD2idXB4bi4AphCbuEDtRfh0PeQtbKwM340FOqluIxMBp0tjlAAHKi1F7IaSIcZFM65tu5jbZiww6NuFPpG2JSRRMfDM0F9uvveay/ikr/5UQ74a9gK94nXoKaQLdB9fy6KvogL2ZkDIfhfwWxCHnyAeftstPGJH44Y3LXWKDyQNq/vXVPxqooMo4XIOMZmMvldjt7P9AE3DKadQnXzrH049XT00kruH0UIvKHej4IiPDOPhDpd9TZPti7yxWE795ZRuzUKw3PWsKvl0+cpZwFsrzOy5TLULQU2VY8SfPjmO29FAY4jL9qcmO/gQRd+E4RtIGMiB0cWQBYshx9sGKwTcFcm48YLHTJAPZZdj5HE21Wa4Womx3ZKJNjTaa7ymkf+511n8eHG9w4oEePgyzurqhIDUoeBYzkqfbsUbM+Q22+Rm0pwaGaUtWOBM6VxGl4F/3ci886uSggBDMoLas+KzV1sbU8RK+1Hn3M/bcINuFFAgxt48xKpG2dTOC8dfaW7ffaFyxM5y3/GGJ/WmsbGktB7Gzjl1d5Y8INt6dPAWYoWoSfdmqk8q9vsgnRnL/poaewDGAoDVvlxsfaz17apRzzWL4y9lr5VOcGSEsKbFEKJw05nq5zGSPuixJkoPw1KRAnCOm5UhBBB+rd1pmrnZncYAdl+59jFGc="
-    #- on:
-    #-   branch: devel
-    #- server: https://test.pypi.org/legacy/
-    #- distributions: sdist bdist_wheel

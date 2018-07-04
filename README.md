@@ -7,6 +7,13 @@
 
 Get data from yaml file directly in your shell
 
+## Features
+- Extract values from json format
+- Extract values from yaml format
+- Automaticaly detect format (json/yaml)
+- Read data from file or pass data from stdin
+- Format output values
+
 ## Install or Update niet
 
 ```sh
@@ -18,6 +25,56 @@ $ pip install -U niet
 - Python 2.7+
 
 ## Usage
+
+### Help and options
+
+```shell
+$ niet --help
+usage: niet [-h] [-f {dquote,ifs,yaml,newline,json,squote}] object [file]
+
+Read data from YAML or JSON file
+
+positional arguments:
+  object                Path to object separated by dot (.). Use '.' to get
+                        whole file. eg: a.b.c
+  file                  Optional JSON or YAML filename. If not provided niet
+                        read from stdin
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f {dquote,ifs,yaml,newline,json,squote}, --format {dquote,ifs,yaml,newline,json,squote}
+                        output format
+
+output formats:
+  dquote        Add double quotes to result
+  ifs   Return all elements of a list separated by IFS env var
+  yaml  Return object in YAML
+  newline       Return all element of a list in a new line
+  json  Return object in JSON
+  squote        Add single quotes to result
+```
+
+### With Json from stdin
+
+```shell
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "Fizz", "4", "Buzz"]}}' | niet fizz.buzz
+1
+2
+Fizz
+4
+Buzz
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "Fizz", "4", "Buzz"]}}' | niet fizz.buzz -f squote
+'1' '2''Fizz' '4' 'Buzz'
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "Fizz", "4", "Buzz"]}}' | niet . -f yaml
+fizz:
+  buzz:
+  - '1'
+  - '2'
+  - Fizz
+  - '4'
+  - Buzz
+foo: bar
+```
 
 ### With YAML file
 
@@ -41,14 +98,14 @@ wget https://gist.githubusercontent.com/4383/53e1599663b369f499aa28e27009f2cd/ra
 
 You can retrieve data from this file by using niet like this:
 ```sh
-$ niet /path/to/your/file.yaml ".project.meta.name"
+$ niet ".project.meta.name" /path/to/your/file.yaml
 my-project
-$ niet /path/to/your/file.yaml ".project.foo"
+$ niet ".project.foo" /path/to/your/file.yaml
 bar
-$ niet /path/to/your/file.yaml ".project.list-items"
+$ niet ".project.list-items" /path/to/your/file.yaml
 item1 item2 item3
 $ # assign return value to shell variable
-$ NAME=$(niet /path/to/your/file.yaml ".project.meta.name")
+$ NAME=$(niet ".project.meta.name" /path/to/your/file.yaml)
 $ echo $NAME
 my-project
 ```
@@ -79,14 +136,14 @@ wget https://gist.githubusercontent.com/4383/1bab8973474625de738f5f6471894322/ra
 
 You can retrieve data from this file by using niet like this:
 ```sh
-$ niet /path/to/your/file.json "project.meta.name"
+$ niet "project.meta.name" /path/to/your/file.json
 my-project
-$ niet /path/to/your/file.json "project.foo"
+$ niet "project.foo" /path/to/your/file.json
 bar
-$ niet /path/to/your/file.json "project.list-items"
+$ niet "project.list-items" /path/to/your/file.json
 item1 item2 item3
 $ # assign return value to shell variable
-$ NAME=$(niet /path/to/your/file.json "project.meta.name")
+$ NAME=$(niet "project.meta.name" /path/to/your/file.json)
 $ echo $NAME
 my-project
 ```
@@ -114,11 +171,11 @@ space otherwise.
 
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
-$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f ifs
+$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f ifs
 item1|item2|item3
-$ IFS=" " niet /path/to/your/file.yaml .project.list-items -f ifs
+$ IFS=" " niet .project.list-items /path/to/your/file.yaml -f ifs
 item1 item2 item3
-$ IFS="@" niet /path/to/your/file.yaml .project.list-items -f ifs
+$ IFS="@" niet .project.list-items /path/to/your/file.yaml -f ifs
 item1@item2@item3
 ```
 
@@ -127,7 +184,7 @@ but your content must, of course, don't contain IFS value:
 ```shell
 OIFS="$IFS"
 IFS="|"
-for i in $(niet /path/to/your/file.yaml .project.list-items -f ifs); do
+for i in $(niet .project.list-items /path/to/your/file.yaml -f ifs); do
     echo ${i}
 done
 IFS="${OIFS}"
@@ -149,10 +206,10 @@ All values are quoted with single quotes and are separated by IFS value.
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
 $ # With the default IFS
-$ niet /path/to/your/file.yaml .project.list-items -f squote
+$ niet .project.list-items /path/to/your/file.yaml -f squote
 'item1' 'item2' 'item3'
 $ # With a specified IFS
-$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f squote
+$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f squote
 'item1'|'item2'|'item3'
 ```
 
@@ -163,10 +220,10 @@ All values are quoted with a double quotes and are separated by IFS value.
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
 $ # With the default IFS
-$ niet /path/to/your/file.yaml .project.list-items -f dquote
+$ niet .project.list-items /path/to/your/file.yaml -f dquote
 'item1' 'item2' 'item3'
 $ # With a specified IFS
-$ IFS="|" niet /path/to/your/file.yaml .project.list-items -f dquote
+$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f dquote
 "item1"|"item2"|"item3"
 ```
 
@@ -176,7 +233,7 @@ This format is usefull using shell while read loop. eg:
 ```sh
 while read value: do
     echo $value
-done < $(niet --format newline your-file.json project.list-items)
+done < $(niet --format newline project.list-items your-file.json)
 ```
  
 #### yaml
@@ -192,7 +249,7 @@ with return code `1`
 
 You can easily protect your script like this:
 ```sh
-PROJECT_NAME=$(niet your-file.yaml project.meta.name)
+PROJECT_NAME=$(niet project.meta.name your-file.yaml)
 if [ "$?" = "1" ]; then
     echo "Error occur ${PROJECT_NAME}"
 else
@@ -222,24 +279,59 @@ project:
 
 Retrieve the project name:
 ```sh
-$ niet tests/samples/sample.yaml project.meta.name
+$ niet project.meta.name tests/samples/sample.yaml
 my-project
 ```
 
 Deal with list of items
 ```sh
-$ for el in $(niet tests/samples/sample.yaml project.list-items); do echo ${el}; done
+$ for el in $(niet project.list-items tests/samples/sample.yaml); do echo ${el}; done
 item1
 item2
 item3
+```
+
+### Transform JSON to YAML
+
+With niet you can easily convert your JSON to YAML
+```shell
+$ niet . tests/samples/sample.json -f yaml
+project:
+  foo: bar
+  list-items:
+  - item1
+  - item2
+  - item3
+  meta:
+    name: my-project
+```
+
+### Transform YAML to JSON
+
+With niet you can easily convert your YAML to JSON
+```shell
+$ niet . tests/samples/sample.yaml -f json
+{
+    "project": {
+        "meta": {
+            "name": "my-project"
+        },
+        "foo": "bar",
+        "list-items": [
+            "item1",
+            "item2",
+            "item3"
+        ]
+    }
+}
 ```
 
 ## Tips
 
 You can pass your search with or without quotes like this:
 ```sh
-$ niet your-file.yaml project.meta.name
-$ niet your-file.yaml "project.meta.name"
+$ niet project.meta.name your-file.yaml
+$ niet "project.meta.name" your-file.yaml
 ```
 
 ## Contribute

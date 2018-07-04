@@ -93,37 +93,38 @@ def argparser():
         description='Read data from YAML or JSON file',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=epilog)
-    parser.add_argument('file', type=str,
-                        help="JSON or YAML filename")
     parser.add_argument('object', type=str,
                         help="Path to object separated by dot (.). \
                         Use '.' to get whole file. \
                         eg: a.b.c")
+    parser.add_argument('file', nargs='?', type=argparse.FileType(),
+                        help="Optional JSON or YAML filename. \
+                        If not provided niet read from stdin")
     parser.add_argument('-f', '--format', type=str,
                         choices=[key for key in VALID_PRINTERS],
                         help="output format")
-    args = parser.parse_args()
-    return args.file, args.object, args.format
+    return parser.parse_args()
 
 
 # Parsing to extract wanted object
-def data_parser(filename):
-    data = None
-    with open(filename, 'r') as stream:
-        content = "".join(stream.readlines())
+def data_parser(dataset):
+    result = None
+    try:
+        result = json.loads(dataset)
+        in_format = "json"
+    except ValueError:
         try:
-            data = json.loads(content)
-            in_format = "json"
-        except ValueError:
-            try:
-                data = yaml.load(content)
-                in_format = "yaml"
-            except yaml.parser.ParserError as err:
-                print(str(err))
-    if not isinstance(data, dict):
-        print("Invalid file. Only support valid json and yaml files")
+            result = yaml.safe_load(dataset)
+            in_format = "yaml"
+        except yaml.constructor.ConstructorError as err:
+            print("Invalid code injection! :)")
+            print(str(err))
+        except yaml.parser.ParserError as err:
+            print(str(err))
+    if not isinstance(result, dict):
+        print("Invalid file. Only support valid json and yaml input")
         sys.exit(1)
-    return data, in_format
+    return result, in_format
 
 
 # Load file
@@ -158,13 +159,19 @@ def print_result(res, out_format, in_format):
         print("Error : Invalid choice")
 
 
+def get_data(infile):
+    with infile:
+        return infile.read()
+
+
 # Main
 def main():
-    filename, search, out_format = argparser()
-    if not os.path.isfile(filename):
-        print("Error: File {} not found!".format(filename))
-        sys.exit(127)
-    data, in_format = data_parser(filename)
+    args = argparser()
+    infile = args.file or sys.stdin
+    search = args.object
+    dataset = get_data(infile)
+    out_format = args.format
+    data, in_format = data_parser(dataset)
     keywords = search.split(".")
     result = get(data, keywords)
     print_result(result, out_format, in_format)
