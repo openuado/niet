@@ -1,2 +1,4 @@
 pbr
 tox
+fixtures
+bandit

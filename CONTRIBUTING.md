@@ -147,6 +147,11 @@ $ tox # by default run tests en python 2.7, 3.4, 3.5, 3.6
 $ tox -e py35 # test with python 3.5
 ```
 
+Security analyze:
+```shell
+bandit -r niet
+```
+
 ### Pull Requests
 
 If everything work fine you can create your pull request.
