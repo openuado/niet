@@ -14,7 +14,9 @@ before_install:
   - pip install -U wheel
 install:
   - pip install tox-travis .[test]
+  - pip install bandit
 script:
+  - bandit -r niet
   - tox
   - python setup.py install
   - niet project.meta.name tests/samples/sample.yaml
