@@ -13,8 +13,7 @@ before_install:
   - pip install -U setuptools
   - pip install -U wheel
 install:
-  - pip install tox-travis .[test]
-  - pip install bandit
+  - pip install tox-travis .[devel]
 script:
   - bandit -r niet
   - tox
