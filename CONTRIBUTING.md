@@ -106,9 +106,7 @@ create a virtual environment and install all the required dependencies:
 ```shell
 $ cd niet
 $ pipenv shell # pip install -U pipenv (if not installed)
-$ pip install -r requirements.txt
-$ pip install -r requirements_dev.txt
-$ python setup.py develop
+$ pip install -e .[devel]
 ```
 
 #### Make your changes
