@@ -103,6 +103,9 @@ def argparser():
     parser.add_argument('-f', '--format', type=str,
                         choices=[key for key in VALID_PRINTERS],
                         help="output format")
+    parser.add_argument('-s', '--silent', action='store_true',
+                        help="silent mode, doesn't display message when \
+                        element was not found")
     return parser.parse_args()
 
 
@@ -128,7 +131,7 @@ def data_parser(dataset):
 
 
 # Load file
-def get(data, keywords):
+def get(data, keywords, silent=False):
     try:
         cursor = data
         for keyword in keywords:
@@ -138,9 +141,10 @@ def get(data, keywords):
             raise KeyError()
         return cursor
     except (KeyError, AttributeError):
-        print("Element not found: {research}".format(
-            research=".".join(keywords))
-        )
+        if not silent:
+            print("Element not found: {research}".format(
+                research=".".join(keywords))
+            )
         sys.exit(1)
 
 
@@ -171,7 +175,8 @@ def main():
     search = args.object
     dataset = get_data(infile)
     out_format = args.format
+    silent = args.silent
     data, in_format = data_parser(dataset)
     keywords = search.split(".")
-    result = get(data, keywords)
+    result = get(data, keywords, silent)
     print_result(result, out_format, in_format)
