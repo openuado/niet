@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Display niet version by using the flag `-v/--version`
+- Allow user to hide the default message when the element was not found
+
 ## 1.3.0
 
 - Read input from stdin or from file

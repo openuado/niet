@@ -1,42 +1,41 @@
 language: python
 cache:
-  - pip
+- pip
 python:
-  - '2.7'
-  - '3.4'
-  - '3.5'
-  - 3.5-dev
-  - '3.6'
-  - 3.6-dev
+- '2.7'
+- '3.4'
+- '3.5'
+- 3.5-dev
+- '3.6'
+- 3.6-dev
 before_install:
-  - pip install -U pip
-  - pip install -U setuptools
-  - pip install -U wheel
+- pip install -U pip
+- pip install -U setuptools
+- pip install -U wheel
 install:
-  - pip install tox-travis .[devel]
+- pip install tox-travis .[devel]
 script:
-  - bandit -r niet
-  - tox
-  - python setup.py install
-  - niet project.meta.name tests/samples/sample.yaml
-  - niet .project.meta.name tests/samples/sample.yaml
-  - niet project.list-items tests/samples/sample.yaml
-  - niet .project.list-items tests/samples/sample.json
-  - niet . tests/samples/sample.json
-  - niet -f squote project.list-items tests/samples/sample.yaml
-  - niet -f squote project.meta.name tests/samples/sample.yaml
-  - niet -f dquote project.list-items tests/samples/sample.yaml
-  - niet -f dquote project.meta.name tests/samples/sample.yaml
-  - niet -f ifs project.list-items tests/samples/sample.yaml
-  - niet --format newline project.list-items tests/samples/sample.yaml
-  - niet --format yaml project.list-items tests/samples/sample.yaml
-  - niet --format json project.list-items tests/samples/sample.yaml
-
+- bandit -r niet
+- tox
+- python setup.py install
+- niet project.meta.name tests/samples/sample.yaml
+- niet .project.meta.name tests/samples/sample.yaml
+- niet project.list-items tests/samples/sample.yaml
+- niet .project.list-items tests/samples/sample.json
+- niet . tests/samples/sample.json
+- niet -f squote project.list-items tests/samples/sample.yaml
+- niet -f squote project.meta.name tests/samples/sample.yaml
+- niet -f dquote project.list-items tests/samples/sample.yaml
+- niet -f dquote project.meta.name tests/samples/sample.yaml
+- niet -f ifs project.list-items tests/samples/sample.yaml
+- niet --format newline project.list-items tests/samples/sample.yaml
+- niet --format yaml project.list-items tests/samples/sample.yaml
+- niet --format json project.list-items tests/samples/sample.yaml
 deploy:
   - provider: pypi
     user: 4383
     password:
-      secure: nCzmcLl34+KqzguQSYO1cWt20RuJ47Xfr7Bawz8ZNzmLf/lC5w4nPhi58thNdu6uFoGgraHlnK49OviP1H5NnImlxWooVWwWyjvwyKI7zT9FpocTuUphCfrqsMF4q9AjmredaazlFR5zAxA73uHCTX9T0Ehu6qF4jG+o+qqqkiP2UiF0AAyP2xVa2m9J6AMpPGGgSvp0/xJYlVQ9o6uAEafk6xBNJxxDcKWGwwjU9VFfUSC5XUAWIeuWEMqO2AJgBEV8pUVMfLZvaVjx2caq2SBUdFrTPqVYRcXHBE/fS/sdczjRYo0SCG2D8sZdtWUqSozcZ1ct1c1LcQI3bMeoEc7WBh0vk5ej7wqnd6DFp/xqmfhgUQx+UwnT7anl1laDXkmPOQK1xRWJA2aghI57u2jahxUqnS7HlL0S6kS0/SjsV9ar5/l8OjHeTDJylwvLGcvCp839cUgnZ1Yx1+nblqDacAWpUw2P6fXvESpkh1pT7AIcEKsFBUpVEqFByh7CtTIZqp8QOyQJYBznoUPLLRcIORPwIQoEzO2VSRmcaR7Ev6LLDYNqnMb8boRDNlDmWE4JTcYBzByIcNi6LC7KSaSqGYfbugXHTHwXQQxDUBDEkAJVlM3RooRQjAE9HtXtSTAKZYFpu66HdxMIIX0wqiOAXar88cz9GrXqh/T0kBs=
+      secure: "f6/SMklCR7Jvf9epmOrpaK3bfb0EETi5LvPVWYj+PLLgUUImNAuQKA3QCNn7I5/+efd1nqZQ3cerQLjVhgAzNZI07Bguc7FGuadePulphpD0CEg7O5WRhqz9KxMurJO1Dje05nYqrFhHFyJZCiXcmHAAoBEFEM8v0TkuVzBIRgtYV4o6ySRFWnwx3a9vybl0l+jUVGufv+sDAo6OozlvVQQK+Z2xFiCz9ePee4RD/LvxAxxgzC5726/56tXuxRxd8fUgtIOCCNutBkewSTo4JXzYUK9bpvQ01pk+b9fkgNDcC+xmXxozhEksZMDyBvQN6tpj0+AYjuZCSu+RQwOHXZ0V2syCjQF3gGNCy7LxQd2/alpDWTIGMPtwR5XvP8ic3UsXpbF9N546IraMc7rm/cBr0U1SdepXO65zSBFxVDOTbXTBnfeNGY8V2dG/9R89RwC9YHFeRf1KjqP8rACC/41eAHn/tB0+WGvcAaXV5snUKZXXetShjGxC78rcSwR1y++HkRbI88o3LqnVjwBaiwAUKKcXLSaS9XLg9+KNBIYb0vzvZaFDh1WxYUwdRgJG/MUZlii8X3CERNPgHxl8mC4yTAITWE1ModnZB+8+Re/63OZB+O88htvHxt8GL2hhU/YH8riwAy2sjSu312U0CMHlzMa18JiLtI1NvTnCHl0="
     on:
       tags: true
     distributions: sdist bdist_wheel
