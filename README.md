@@ -30,7 +30,8 @@ $ pip install -U niet
 
 ```shell
 $ niet --help
-usage: niet [-h] [-f {dquote,ifs,yaml,newline,json,squote}] object [file]
+usage: niet [-h] [-f {ifs,squote,newline,dquote,yaml,json}] [-s] [-v]
+            object [file]
 
 Read data from YAML or JSON file
 
@@ -42,16 +43,20 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f {dquote,ifs,yaml,newline,json,squote}, --format {dquote,ifs,yaml,newline,json,squote}
+  -f {ifs,squote,newline,dquote,yaml,json}, --format {ifs,squote,newline,dquote,yaml,json}
                         output format
+  -s, --silent          silent mode, doesn't display message when element was
+                        not found
+  -v, --version         print the Niet version number and exit (also
+                        --version)
 
 output formats:
-  dquote        Add double quotes to result
   ifs   Return all elements of a list separated by IFS env var
-  yaml  Return object in YAML
-  newline       Return all element of a list in a new line
-  json  Return object in JSON
   squote        Add single quotes to result
+  newline       Return all element of a list in a new line
+  dquote        Add double quotes to result
+  yaml  Return object in YAML
+  json  Return object in JSON
 ```
 
 ### With Json from stdin

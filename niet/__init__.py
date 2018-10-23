@@ -6,6 +6,8 @@ import sys
 
 from future.utils import viewitems
 
+import pkg_resources
+
 import yaml
 
 
@@ -106,6 +108,9 @@ def argparser():
     parser.add_argument('-s', '--silent', action='store_true',
                         help="silent mode, doesn't display message when \
                         element was not found")
+    parser.add_argument('-v', '--version', action='store_true',
+                        help="print the Niet version number and \
+                        exit (also --version)")
     return parser.parse_args()
 
 
@@ -168,8 +173,16 @@ def get_data(infile):
         return infile.read()
 
 
+def version():
+    installed = pkg_resources.get_distribution('niet').version
+    print("Niet version {}".format(installed))
+
+
 # Main
 def main():
+    if '-v' in sys.argv or '--version' in sys.argv:
+        version()
+        sys.exit(0)
     args = argparser()
     infile = args.file or sys.stdin
     search = args.object
