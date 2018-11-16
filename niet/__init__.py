@@ -39,7 +39,13 @@ def out_print_ifs(res):
 
 def out_print_newline(res):
     if isinstance(res, list):
-        return '\n'.join(res)
+        try:
+            return '\n'.join(res)
+        except TypeError:
+            result = []
+            for el in res:
+                result.append(yaml.dump(el))
+            return "".join(result)
     else:
         return res
 
@@ -155,9 +161,7 @@ def get(data, keywords, silent=False):
 
 def print_result(res, out_format, in_format):
     if out_format is None:
-        if (isinstance(res, list) or isinstance(res, str) or
-                isinstance(res, int) or
-                in_format is None):
+        if (isinstance(res, (list, str, int)) or in_format is None):
             out_format = "newline"
         else:
             out_format = in_format
