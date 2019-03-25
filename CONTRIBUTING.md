@@ -113,10 +113,10 @@ $ pip install -e .[devel]
 
 First create your working branch:
 ```shell
-$ git checkout -b somefeature origin/devel
+$ git checkout -b somefeature origin/master
 ```
 
-> Be sure to create your working branch from `devel` and be sure your devel are up-to-date
+> Be sure to create your working branch from `master` and be sure your master are up-to-date
 
 Make our changes:
 ```shell
@@ -156,7 +156,7 @@ If everything work fine you can create your pull request.
 
 Before ensure you have [squash your commits](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html).
 
-> Be sure to submit your pull request on the upstream `devel` branch!
+> Be sure to submit your pull request on the upstream `master` branch!
 
 By using [git-pull-request](https://github.com/jd/git-pull-request):
 ```shell
