@@ -6,6 +6,8 @@ import sys
 
 from future.utils import viewitems
 
+from jmespath import search
+
 import pkg_resources
 
 import yaml
@@ -131,7 +133,6 @@ def data_parser(dataset):
             result = yaml.safe_load(dataset)
             in_format = "yaml"
         except yaml.constructor.ConstructorError as err:
-            print("Invalid code injection! :)")
             print(str(err))
         except yaml.parser.ParserError as err:
             print(str(err))
@@ -143,19 +144,18 @@ def data_parser(dataset):
 
 # Load file
 def get(data, keywords, silent=False):
+    if keywords == ".":
+        return data
+    if keywords.startswith("."):
+        keywords = keywords[1:]
     try:
-        cursor = data
-        for keyword in keywords:
-            if not '' == keyword:
-                cursor = cursor.get(keyword)
+        cursor = search(keywords, data)
         if not cursor:
             raise KeyError()
         return cursor
     except (KeyError, AttributeError):
         if not silent:
-            print("Element not found: {research}".format(
-                research=".".join(keywords))
-            )
+            print("Element not found: {research}".format(research=keywords))
         sys.exit(1)
 
 
@@ -167,9 +167,10 @@ def print_result(res, out_format, in_format):
             out_format = in_format
     try:
         output = VALID_PRINTERS[out_format]["cmd"](res)
-        print(output)
     except KeyError:
         print("Error : Invalid choice")
+    else:
+        print(output)
 
 
 def get_data(infile):
@@ -179,7 +180,7 @@ def get_data(infile):
 
 def version():
     installed = pkg_resources.get_distribution('niet').version
-    print("Niet version {}".format(installed))
+    print("niet version {}".format(installed))
 
 
 # Main
@@ -194,6 +195,5 @@ def main():
     out_format = args.format
     silent = args.silent
     data, in_format = data_parser(dataset)
-    keywords = search.split(".")
-    result = get(data, keywords, silent)
+    result = get(data, search, silent)
     print_result(result, out_format, in_format)

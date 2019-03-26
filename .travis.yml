@@ -15,22 +15,21 @@ before_install:
 install:
 - pip install tox-travis .[devel]
 script:
-- bandit -r niet
 - tox
 - python setup.py install
 - niet project.meta.name tests/samples/sample.yaml
 - niet .project.meta.name tests/samples/sample.yaml
-- niet project.list-items tests/samples/sample.yaml
-- niet .project.list-items tests/samples/sample.json
+- niet project.list tests/samples/sample.yaml
+- niet .project.list tests/samples/sample.json
 - niet . tests/samples/sample.json
-- niet -f squote project.list-items tests/samples/sample.yaml
+- niet -f squote project.list tests/samples/sample.yaml
 - niet -f squote project.meta.name tests/samples/sample.yaml
-- niet -f dquote project.list-items tests/samples/sample.yaml
+- niet -f dquote project.list tests/samples/sample.yaml
 - niet -f dquote project.meta.name tests/samples/sample.yaml
-- niet -f ifs project.list-items tests/samples/sample.yaml
-- niet --format newline project.list-items tests/samples/sample.yaml
-- niet --format yaml project.list-items tests/samples/sample.yaml
-- niet --format json project.list-items tests/samples/sample.yaml
+- niet -f ifs project.list tests/samples/sample.yaml
+- niet --format newline project.list tests/samples/sample.yaml
+- niet --format yaml project.list tests/samples/sample.yaml
+- niet --format json project.list tests/samples/sample.yaml
 deploy:
   - provider: pypi
     user: 4383
