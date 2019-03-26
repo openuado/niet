@@ -2,7 +2,7 @@ project:
     meta:
         name: my-project
     foo: bar
-    list-items:
+    list:
         - item1
         - item2
         - item3

@@ -1,18 +1,30 @@
 # niet
 
-[![Build Status](https://travis-ci.org/gr0und-s3ct0r/niet.svg?branch=devel)](https://travis-ci.org/gr0und-s3ct0r/niet)
+[![Build Status](https://travis-ci.org/gr0und-s3ct0r/niet.svg?branch=master)](https://travis-ci.org/gr0und-s3ct0r/niet)
 ![PyPI](https://img.shields.io/pypi/v/niet.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/niet.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/niet.svg)
 
 Get data from yaml file directly in your shell
 
+Niet is like [xmllint](http://xmlsoft.org/xmllint.html) or
+[jq](https://stedolan.github.io/jq/) but for YAML and JSON data -
+you can use it to slice and filter and map and transform structured data.
+
+You can easily retrieve data by using simple expressions or using
+xpath advanced features to access non-trivial data.
+
+You can easily convert YAML format into JSON format and vice versa.
+
 ## Features
+- Extract elements by using xpath syntax
 - Extract values from json format
 - Extract values from yaml format
 - Automaticaly detect format (json/yaml)
 - Read data from file or pass data from stdin
 - Format output values
+- Convert YAML to JSON
+- Convert JSON to YAML
 
 ## Install or Update niet
 
@@ -22,7 +34,7 @@ $ pip install -U niet
 
 ## Requirements
 
-- Python 2.7+
+- Python 2.7 / Python 3+
 
 ## Usage
 
@@ -70,15 +82,22 @@ Fizz
 Buzz
 $ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "Fizz", "4", "Buzz"]}}' | niet fizz.buzz -f squote
 '1' '2''Fizz' '4' 'Buzz'
-$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "Fizz", "4", "Buzz"]}}' | niet . -f yaml
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "fizz", "4", "buzz"]}}' | niet . -f yaml
 fizz:
   buzz:
   - '1'
   - '2'
-  - Fizz
+  - fizz
   - '4'
-  - Buzz
+  - buzz
 foo: bar
+$ echo '{"foo": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet "fizz.buzz[2]"
+two
+$ echo '{"foo": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f dquote "fizz.buzz[0:2]"
+"zero" "one"
+$ echo '{"foo": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f dquote "fizz.buzz[:3]"
+"zero" "one" "two"
+
 ```
 
 ### With YAML file
@@ -90,7 +109,7 @@ project:
     meta:
         name: my-project
     foo: bar
-    list-items:
+    list:
         - item1
         - item2
         - item3
@@ -107,7 +126,7 @@ $ niet ".project.meta.name" /path/to/your/file.yaml
 my-project
 $ niet ".project.foo" /path/to/your/file.yaml
 bar
-$ niet ".project.list-items" /path/to/your/file.yaml
+$ niet ".project.list" /path/to/your/file.yaml
 item1 item2 item3
 $ # assign return value to shell variable
 $ NAME=$(niet ".project.meta.name" /path/to/your/file.yaml)
@@ -126,7 +145,7 @@ Consider the json file with the following content:
         }
     },
     "foo": "bar",
-    "list-items": [
+    "list": [
         "item1",
         "item2",
         "item3"
@@ -145,7 +164,7 @@ $ niet "project.meta.name" /path/to/your/file.json
 my-project
 $ niet "project.foo" /path/to/your/file.json
 bar
-$ niet "project.list-items" /path/to/your/file.json
+$ niet "project.list" /path/to/your/file.json
 item1 item2 item3
 $ # assign return value to shell variable
 $ NAME=$(niet "project.meta.name" /path/to/your/file.json)
@@ -176,11 +195,11 @@ space otherwise.
 
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
-$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f ifs
+$ IFS="|" niet .project.list /path/to/your/file.yaml -f ifs
 item1|item2|item3
-$ IFS=" " niet .project.list-items /path/to/your/file.yaml -f ifs
+$ IFS=" " niet .project.list /path/to/your/file.yaml -f ifs
 item1 item2 item3
-$ IFS="@" niet .project.list-items /path/to/your/file.yaml -f ifs
+$ IFS="@" niet .project.list /path/to/your/file.yaml -f ifs
 item1@item2@item3
 ```
 
@@ -189,7 +208,7 @@ but your content must, of course, don't contain IFS value:
 ```shell
 OIFS="$IFS"
 IFS="|"
-for i in $(niet .project.list-items /path/to/your/file.yaml -f ifs); do
+for i in $(niet .project.list /path/to/your/file.yaml -f ifs); do
     echo ${i}
 done
 IFS="${OIFS}"
@@ -211,10 +230,10 @@ All values are quoted with single quotes and are separated by IFS value.
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
 $ # With the default IFS
-$ niet .project.list-items /path/to/your/file.yaml -f squote
+$ niet .project.list /path/to/your/file.yaml -f squote
 'item1' 'item2' 'item3'
 $ # With a specified IFS
-$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f squote
+$ IFS="|" niet .project.list /path/to/your/file.yaml -f squote
 'item1'|'item2'|'item3'
 ```
 
@@ -225,10 +244,10 @@ All values are quoted with a double quotes and are separated by IFS value.
 Examples (consider the previous [YAML file example](#with-yaml-file)):
 ```shell
 $ # With the default IFS
-$ niet .project.list-items /path/to/your/file.yaml -f dquote
+$ niet .project.list /path/to/your/file.yaml -f dquote
 'item1' 'item2' 'item3'
 $ # With a specified IFS
-$ IFS="|" niet .project.list-items /path/to/your/file.yaml -f dquote
+$ IFS="|" niet .project.list /path/to/your/file.yaml -f dquote
 "item1"|"item2"|"item3"
 ```
 
@@ -238,7 +257,7 @@ This format is usefull using shell while read loop. eg:
 ```sh
 while read value: do
     echo $value
-done < $(niet --format newline project.list-items your-file.json)
+done < $(niet --format newline project.list your-file.json)
 ```
  
 #### yaml
@@ -299,7 +318,7 @@ project:
     meta:
         name: my-project
     foo: bar
-    list-items:
+    list:
         - item1
         - item2
         - item3
@@ -313,7 +332,7 @@ my-project
 
 Deal with list of items
 ```sh
-$ for el in $(niet project.list-items tests/samples/sample.yaml); do echo ${el}; done
+$ for el in $(niet project.list tests/samples/sample.yaml); do echo ${el}; done
 item1
 item2
 item3
@@ -326,7 +345,7 @@ With niet you can easily convert your JSON to YAML
 $ niet . tests/samples/sample.json -f yaml
 project:
   foo: bar
-  list-items:
+  list:
   - item1
   - item2
   - item3
@@ -345,7 +364,7 @@ $ niet . tests/samples/sample.yaml -f json
             "name": "my-project"
         },
         "foo": "bar",
-        "list-items": [
+        "list": [
             "item1",
             "item2",
             "item3"
