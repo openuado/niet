@@ -22,7 +22,7 @@ Following these guidelines helps maintainers and the community
 understand your report, reproduce the behavior, and find related reports.
 
 Before creating bug reports, please perform a
-[cursory search](https://github.com/gr0und-s3ct0r/niet/issues?q=is%3Aissue%20is%3Aopen%20)
+[cursory search](https://github.com/openuado/niet/issues?q=is%3Aissue%20is%3Aopen%20)
 to see if the problem has already been reported.
 If it has and the issue is still open, add a comment to
 the existing issue instead of opening a new one.
@@ -95,7 +95,7 @@ If you're hitting a bug in niet or just want to experiment with adding a feature
 #### Cloning
 
 ```shell
-$ git clone https://github.com/gr0und-s3ct0r/niet
+$ git clone https://github.com/openuado/niet
 ```
 
 #### Setup your environment
@@ -162,7 +162,7 @@ By using [git-pull-request](https://github.com/jd/git-pull-request):
 ```shell
 $ pip install -U git-pull-request # if not installed
 $ git pull-request 
-Forked repository: https://github.com/gr0und-s3ct0r/niet
+Forked repository: https://github.com/openuado/niet
 Force-pushing branch `somefeature' to remote `github'
 Counting objects: 5, done.
 Delta compression using up to 4 threads.
@@ -170,9 +170,9 @@ Compressing objects: 100% (4/4), done.
 Writing objects: 100% (5/5), 562 bytes | 0 bytes/s, done.
 Total 5 (delta 3), reused 0 (delta 0)
 remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
-To https://github.com/gr0und-s3ct0r/niet.git
+To https://github.com/openuado/niet.git
  + 73a733f7...1be2bf29 somefeature -> somefeature (forced update)
- Pull-request created: https://github.com/grOund-s3ctOr/niet/pull/33
+ Pull-request created: https://github.com/openuado/niet/pull/33
 ```
 
 Or manually directly from github:

@@ -1,6 +1,6 @@
 # niet
 
-[![Build Status](https://travis-ci.org/gr0und-s3ct0r/niet.svg?branch=master)](https://travis-ci.org/gr0und-s3ct0r/niet)
+[![Build Status](https://travis-ci.org/openuado/niet.svg?branch=master)](https://travis-ci.org/openuado/niet)
 ![PyPI](https://img.shields.io/pypi/v/niet.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/niet.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/niet.svg)
