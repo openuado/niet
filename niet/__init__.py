@@ -136,7 +136,7 @@ def data_parser(dataset):
             print(str(err))
         except yaml.parser.ParserError as err:
             print(str(err))
-    if not isinstance(result, dict):
+    if not isinstance(result, (list, dict)):
         print("Invalid file. Only support valid json and yaml input")
         sys.exit(1)
     return result, in_format
