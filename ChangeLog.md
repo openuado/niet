@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.5.1
+
+- Fix JSON parsing when stream start with a list
+- Compatibility with python 3.7
+
+## 1.5.0
+
+- Support for xpath search
+
+## 1.4.2
+
+- Fix license typo
+
+
+## 1.4.1
+
+- Fixing list of dict extract
+- fix setup install requirements
+
+
 ## 1.4.0
 
 - Display niet version by using the flag `-v/--version`
