@@ -172,6 +172,79 @@ $ echo $NAME
 my-project
 ```
 
+### Object Identifiers
+
+An identifier is the most basic expression and can be used to extract a single
+element from a JSON/YAML document. The return value for an identifier is
+the value associated with the identifier. If the identifier does not
+exist in the JSON/YAML document, than niet display a specific message and
+return the error code `1`, example:
+
+```sh
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "3"]}}' | niet fizz.gogo
+Element not found: fizz.gogo
+$ echo $?
+1
+```
+
+See the [related section](#deal-with-errors) for more info on how to manage
+errors with `niet`.
+
+Niet is based on `jmespath` to find results so for complex research you can
+refer to the [jmespath specifications](http://jmespath.org/specification.html#identifiers)
+to use identifiers properly.
+
+If you try to search for an identifier who use some dash you need to surround
+your research expression with simple and double quotes, examples:
+
+```sh
+$ echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f dquote '"foo-biz"'
+bar
+$ echo '{"key-test": "value"}' | niet '"key-test"'
+value
+```
+
+However, `niet` will detect related issues and surround automatically your
+identifier if `jmespath` fail to handle it.
+
+Hence, the following examples will return similar results than the previous
+examples:
+
+```sh
+$ echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f dquote foo-biz
+bar
+$ echo '{"key-test": "value"}' | niet key-test
+value
+```
+
+If your object is not at the root of your path, an example is available in
+`tests/sample/sample.json`, then you need to only surround the researched
+identifier like this `project.'"test-dash"'`
+
+```json
+{
+    "project": {
+        "meta": {
+            "name": "my-project"
+        }
+    },
+    "foo": "bar",
+    "list": [
+        "item1",
+        "item2",
+        "item3"
+    ],
+    "test-dash": "value"
+}
+```
+
+Example:
+```sh
+niet project.'"test-dash"' tests/sample/sample.json
+```
+
+Further examples with [`jmespath` identifiers](http://jmespath.org/specification.html#examples).
+
 ### Output formats 
 You can change the output format using the -f or --format optional 
 argument. 

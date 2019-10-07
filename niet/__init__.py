@@ -7,6 +7,7 @@ import sys
 from future.utils import viewitems
 
 from jmespath import search
+from jmespath.exceptions import LexerError
 
 import pkg_resources
 
@@ -148,8 +149,12 @@ def get(data, keywords, silent=False):
         return data
     if keywords.startswith("."):
         keywords = keywords[1:]
+    cursor = None
     try:
-        cursor = search(keywords, data)
+        try:
+            cursor = search(keywords, data)
+        except LexerError:
+            cursor = search('"{keywords}"'.format(keywords=keywords), data)
         if not cursor:
             raise KeyError()
         return cursor
