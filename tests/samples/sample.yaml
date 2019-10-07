@@ -6,3 +6,4 @@ project:
         - item1
         - item2
         - item3
+    test-dash: value

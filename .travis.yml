@@ -31,6 +31,8 @@ script:
 - niet --format newline project.list tests/samples/sample.yaml
 - niet --format yaml project.list tests/samples/sample.yaml
 - niet --format json project.list tests/samples/sample.yaml
+- niet project.'"test-dash"' tests/samples/sample.yaml
+- niet project.'"test-dash"' tests/samples/sample.json
 deploy:
   - provider: pypi
     user: 4383
