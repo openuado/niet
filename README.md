@@ -113,6 +113,7 @@ project:
         - item1
         - item2
         - item3
+    test-dash: value
 ```
 
 You can [download the previous example](https://gist.githubusercontent.com/4383/53e1599663b369f499aa28e27009f2cd/raw/389b82c19499b8cb84a464784e9c79aa25d3a9d3/file.yaml) locally for testing purpose or use the command line for this:
@@ -132,6 +133,8 @@ $ # assign return value to shell variable
 $ NAME=$(niet ".project.meta.name" /path/to/your/file.yaml)
 $ echo $NAME
 my-project
+$ niet project.'"test-dash"' /path/to/your/file.json
+value
 ```
 
 ### With JSON file
@@ -142,14 +145,15 @@ Consider the json file with the following content:
     "project": {
         "meta": {
             "name": "my-project"
-        }
-    },
-    "foo": "bar",
-    "list": [
-        "item1",
-        "item2",
-        "item3"
-    ]
+        },
+        "foo": "bar",
+        "list": [
+            "item1",
+            "item2",
+            "item3"
+        ],
+        "test-dash": "value"
+    }
 }
 ```
 
@@ -170,6 +174,8 @@ $ # assign return value to shell variable
 $ NAME=$(niet "project.meta.name" /path/to/your/file.json)
 $ echo $NAME
 my-project
+$ niet project.'"test-dash"' /path/to/your/file.json
+value
 ```
 
 ### Object Identifiers
@@ -226,16 +232,17 @@ identifier like this `project.'"test-dash"'`
     "project": {
         "meta": {
             "name": "my-project"
-        }
-    },
-    "foo": "bar",
-    "list": [
-        "item1",
-        "item2",
-        "item3"
-    ],
-    "test-dash": "value"
+        },
+        "foo": "bar",
+        "list": [
+            "item1",
+            "item2",
+            "item3"
+        ],
+        "test-dash": "value"
+    }
 }
+
 ```
 
 Example:
