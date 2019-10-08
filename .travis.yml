@@ -33,6 +33,10 @@ script:
 - niet --format json project.list tests/samples/sample.yaml
 - niet project.'"test-dash"' tests/samples/sample.yaml
 - niet project.'"test-dash"' tests/samples/sample.json
+- niet project.'"test-dash"' tests/samples/sample.json -f eval
+- niet project.list tests/samples/sample.json -f eval
+- niet project tests/samples/sample.json -f eval
+- eval $(niet project tests/samples/sample.json -f eval); test "${project__foo}" = "bar"
 deploy:
   - provider: pypi
     user: 4383
