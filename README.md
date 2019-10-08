@@ -339,6 +339,43 @@ while read value: do
     echo $value
 done < $(niet --format newline project.list your-file.json)
 ```
+
+#### eval
+
+Eval output format allow you to eval output string to initialize shell
+variable generated from your JSON/YAML content.
+
+You can intialize shell variables from your entire content, example:
+
+```sh
+$ echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f eval .
+ foo_biz="bar";fizz__buzz=( zero one two three )
+$ eval $(echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f eval .)
+$ echo ${foo_biz}
+bar
+$ echo ${fizz__buzz}
+zero one two three
+$ eval $(echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f eval '"foo-biz"'); echo ${foo_biz}
+bar
+$ echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f eval fizz.buzz
+fizz_buzz=( zero one two three );
+```
+
+Parent elements are separated by `__` by example the `fizz.buzz` element
+will be represented by a variable named `fizz__buzz`. You need to consider
+that when you call your expected variables.
+
+Also you can initialize some shell array from your content and loop over in
+a shell maner:
+
+```sh
+$ eval $(echo '{"foo-biz": "bar", "fizz": {"buzz": ["zero", "one", "two", "three"]}}' | niet -f eval fizz.buzz)
+$ for el in ${fizz_buzz}; do echo $el; done
+zero
+one
+two
+three
+```
  
 #### yaml
 Yaml output format force output to be in YAML regardless the input file format.

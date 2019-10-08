@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import argparse
 import json
-import os.path
 import sys
 
 from future.utils import viewitems
@@ -9,81 +8,41 @@ from future.utils import viewitems
 from jmespath import search
 from jmespath.exceptions import LexerError
 
+import niet.output as output
+
 import pkg_resources
 
 import yaml
 
 
-IFS = os.getenv('IFS', ' ')
-
-
-# Output functions
-def out_print_squote(res):
-    if isinstance(res, list):
-        res = IFS.join(["'{}'".format(el) for el in res])
-    elif (isinstance(res, str) or isinstance(res, int)):
-        res = "".join("'{}'".format(res))
-    return res
-
-
-def out_print_dquote(res):
-    if isinstance(res, list):
-        res = IFS.join(["\"{}\"".format(el) for el in res])
-    elif (isinstance(res, str) or isinstance(res, int)):
-        res = "".join("\"{}\"".format(res))
-    return res
-
-
-def out_print_ifs(res):
-    if isinstance(res, list):
-        res = IFS.join(["{}".format(el) for el in res])
-    return res
-
-
-def out_print_newline(res):
-    if isinstance(res, list):
-        try:
-            return '\n'.join(res)
-        except TypeError:
-            result = []
-            for el in res:
-                result.append(yaml.dump(el))
-            return "".join(result)
-    else:
-        return res
-
-
-def out_print_yaml(res):
-    return yaml.dump(res, default_flow_style=False)
-
-
-def out_print_json(res):
-    return json.dumps(res, indent=4)
-
-
 VALID_PRINTERS = {
     "json": {
-        "cmd": out_print_json,
+        "cmd": output.print_json,
         "epilog": "Return object in JSON",
     },
     "yaml": {
-        "cmd": out_print_yaml,
+        "cmd": output.print_yaml,
         "epilog": "Return object in YAML",
     },
+    "eval": {
+        "cmd": output.print_eval,
+        "epilog": "Return result in a string evaluable by a shell "
+        "eval command as an input",
+    },
     "newline": {
-        "cmd": out_print_newline,
-        "epilog": "Return all element of a list in a new line",
+        "cmd": output.print_newline,
+        "epilog": "Return all elements of a list in a new line",
     },
     "ifs": {
-        "cmd": out_print_ifs,
+        "cmd": output.print_ifs,
         "epilog": "Return all elements of a list separated by IFS env var",
     },
     "squote": {
-        "cmd": out_print_squote,
+        "cmd": output.print_squote,
         "epilog": "Add single quotes to result",
     },
     "dquote": {
-        "cmd": out_print_dquote,
+        "cmd": output.print_dquote,
         "epilog": "Add double quotes to result",
     },
 }
@@ -164,14 +123,18 @@ def get(data, keywords, silent=False):
         sys.exit(1)
 
 
-def print_result(res, out_format, in_format):
+def print_result(res, out_format, in_format, search):
     if out_format is None:
         if (isinstance(res, (list, str, int)) or in_format is None):
             out_format = "newline"
         else:
             out_format = in_format
     try:
-        output = VALID_PRINTERS[out_format]["cmd"](res)
+        if out_format == "eval":
+            output = VALID_PRINTERS[out_format]["cmd"](res, search)
+        else:
+            # we need to pass the search to init the eval var name
+            output = VALID_PRINTERS[out_format]["cmd"](res)
     except KeyError:
         print("Error : Invalid choice")
     else:
@@ -201,4 +164,4 @@ def main():
     silent = args.silent
     data, in_format = data_parser(dataset)
     result = get(data, search, silent)
-    print_result(result, out_format, in_format)
+    print_result(result, out_format, in_format, search)
