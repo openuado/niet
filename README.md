@@ -455,6 +455,19 @@ item2
 item3
 ```
 
+Also you can `eval` your `niet` output to setput some shell variables
+that you can reuse in your shell scripts, the following example is similar to
+the previous example but make use of the eval ouput format (`-f eval`):
+
+```sh
+$ eval $(niet -f eval project.list tests/samples/sample.yaml)
+$ for el in ${project__list}; do echo $el; done
+zero
+one
+two
+three
+```
+
 ### Transform JSON to YAML
 
 With niet you can easily convert your JSON to YAML
