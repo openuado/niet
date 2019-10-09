@@ -124,6 +124,25 @@ $ vim <file-to-edit>
 $ git commit -am 'I did some changes'
 ```
 
+#### Local checks
+
+Install pbr:
+```shell
+$ pip install pbr
+```
+
+Build locally and install currently version under development:
+```shell
+$ python setup.py develop
+```
+
+Test niet:
+```shell
+$ niet -v
+niet version 1.7.1.dev3
+```
+Current version under development is installed and can be tested.
+
 #### Ensure everything work fine
 
 Every following checks are automaticaly executed on pull requests so need to
