@@ -443,11 +443,15 @@ project:
         - item3
 ```
 
+### Extract a single value 
+
 Retrieve the project name:
 ```sh
 $ niet project.meta.name tests/samples/sample.yaml
 my-project
 ```
+
+### Extract a list and parse it in shell
 
 Deal with list of items
 ```sh
@@ -468,6 +472,19 @@ zero
 one
 two
 three
+```
+
+### Extract a complex object and parse it in shell
+
+Extract the object as JSON to store it in shell variable :
+```shell
+$ project="$(niet -f json .project tests/samples/sample.yaml)"
+```
+
+Then parse it after in bash in this example:
+```shell
+$ niet .meta.name <<< $project
+my-project
 ```
 
 ### Transform JSON to YAML
@@ -504,6 +521,28 @@ $ niet . tests/samples/sample.yaml -f json
     }
 }
 ```
+
+### Indent JSON file
+
+This is an example of how to indent a JSON file :
+```shell
+$ niet . tests/samples/sample_not_indented.json 
+{
+    "project": {
+        "meta": {
+            "name": "my-project"
+        },
+        "foo": "bar",
+        "list": [
+            "item1",
+            "item2",
+            "item3"
+        ],
+        "test-dash": "value"
+    }
+}
+```
+
 
 ## Tips
 
