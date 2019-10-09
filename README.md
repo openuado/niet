@@ -23,6 +23,7 @@ You can easily convert YAML format into JSON format and vice versa.
 - Automaticaly detect format (json/yaml)
 - Read data from file or pass data from stdin
 - Format output values
+- Format output to be reused by shell `eval`
 - Convert YAML to JSON
 - Convert JSON to YAML
 
