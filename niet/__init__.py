@@ -3,8 +3,6 @@ import argparse
 import json
 import sys
 
-from future.utils import viewitems
-
 from jmespath import search
 from jmespath.exceptions import LexerError
 
@@ -50,8 +48,8 @@ VALID_PRINTERS = {
 
 def get_epilog():
     epilog = ""
-    for key, value in viewitems(VALID_PRINTERS):
-        epilog += "  {}\t{}\n".format(key, value['epilog'])
+    for item in VALID_PRINTERS:
+        epilog += "  {}\t{}\n".format(item, VALID_PRINTERS[item]["epilog"])
     return epilog
 
 
