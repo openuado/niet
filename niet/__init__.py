@@ -71,6 +71,12 @@ def argparser():
     parser.add_argument('-f', '--format', type=str,
                         choices=[key for key in VALID_PRINTERS],
                         help="output format")
+    parser.add_argument('-i', '--in-place', action='store_true',
+                        help="Perform modification in place. Will so alter \
+                        read file")
+    parser.add_argument('-o', '--output', type=str, metavar="OUTPUT_FILE",
+                        help="Print output in a file instead of stdout \
+                        (surcharged by in-place parameter if set)")
     parser.add_argument('-s', '--silent', action='store_true',
                         help="silent mode, doesn't display message when \
                         element was not found")
@@ -121,7 +127,7 @@ def get(data, keywords, silent=False):
         sys.exit(1)
 
 
-def print_result(res, out_format, in_format, search):
+def print_result(res, out_format, in_format, search, out_file):
     if out_format is None:
         if (isinstance(res, (list, str, int)) or in_format is None):
             out_format = "newline"
@@ -136,7 +142,11 @@ def print_result(res, out_format, in_format, search):
     except KeyError:
         print("Error : Invalid choice")
     else:
-        print(output)
+        if out_file:
+            with open(out_file, "w+") as f:
+                f.write(output)
+        else:
+            print(output)
 
 
 def get_data(infile):
@@ -156,10 +166,17 @@ def main():
         sys.exit(0)
     args = argparser()
     infile = args.file or sys.stdin
+    infilename = args.file.name
     search = args.object
     dataset = get_data(infile)
+    infile.close()
     out_format = args.format
+    out_file = args.output
     silent = args.silent
     data, in_format = data_parser(dataset)
     result = get(data, search, silent)
-    print_result(result, out_format, in_format, search)
+
+    if args.in_place and infilename:
+        out_file = infilename
+
+    print_result(result, out_format, in_format, search, out_file)
