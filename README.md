@@ -58,6 +58,10 @@ optional arguments:
   -h, --help            show this help message and exit
   -f {json,yaml,eval,newline,ifs,squote,dquote}, --format {json,yaml,eval,newline,ifs,squote,dquote}
                         output format
+  -i, --in-place        Perform modification in place. Will so alter read file
+  -o OUTPUT_FILE, --output OUTPUT_FILE
+                        Print output in a file instead of stdout (surcharged
+                        by infile parameter if set)
   -s, --silent          silent mode, doesn't display message when element was
                         not found
   -v, --version         print the Niet version number and exit (also
@@ -253,6 +257,21 @@ niet project.'"test-dash"' tests/sample/sample.json
 ```
 
 Further examples with [`jmespath` identifiers](http://jmespath.org/specification.html#examples).
+
+### Output
+
+#### Stdout
+By default, niet print the output on stdout. 
+
+#### Save output to a file
+It if possible to pass a filename using -o or --output argument to writes
+directly in a file. This file will be created if not exists or will be
+replaced if already exists.
+
+#### In-file modification
+It is possible to modify directly a file using -i or --in-place argument. This will replace
+the input file by the output of niet command. This can be used to extract some data of a file or
+reindent a file.
 
 ### Output formats 
 You can change the output format using the -f or --format optional 
