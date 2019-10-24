@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+1.8.1
+-----
+
+* fix infilename retrieve if input come from stdin
+* rename Changelog
+* Update Changelog
+
 1.8.0
 -----
 
