@@ -166,7 +166,7 @@ def main():
         sys.exit(0)
     args = argparser()
     infile = args.file or sys.stdin
-    infilename = args.file.name
+    infilename = args.file.name if args.file else ""
     search = args.object
     dataset = get_data(infile)
     infile.close()
