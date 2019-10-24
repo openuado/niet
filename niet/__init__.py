@@ -129,7 +129,7 @@ def get(data, keywords, silent=False):
 
 def print_result(res, out_format, in_format, search, out_file):
     if out_format is None:
-        if (isinstance(res, (list, str, int)) or in_format is None):
+        if (isinstance(res, (list, str, int, float)) or in_format is None):
             out_format = "newline"
         else:
             out_format = in_format
