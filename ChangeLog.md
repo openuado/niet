@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+1.8.2
+-----
+
+* fix use newline format on single value
+* add download badge
+* update changelog
+
 1.8.1
 -----
 
