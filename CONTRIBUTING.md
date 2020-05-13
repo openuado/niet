@@ -86,11 +86,8 @@ If you're hitting a bug in niet or just want to experiment with adding a feature
 
 #### Prerequisites
 
-- [pipenv](https://github.com/kennethreitz/pipenv)
-- [pbr](https://docs.openstack.org/pbr/latest/)
-- [flake8](http://flake8.pycqa.org/en/latest/)
 - [tox](https://tox.readthedocs.io/en/latest/)
-- python2.7+
+- python 2.7+
 
 #### Cloning
 
@@ -100,13 +97,30 @@ $ git clone https://github.com/openuado/niet
 
 #### Setup your environment
 
-From there, you can navigate into the directory where you've cloned the niet source code,
-create a virtual environment and install all the required dependencies:
+From there, you can navigate into the directory where you've cloned
+the niet source code
 
 ```shell
 $ cd niet
-$ pipenv shell # pip install -U pipenv (if not installed)
-$ pip install -e .
+```
+
+`tox` allow you to use niet directly in a dedicated virtual environment
+already configured (requirements, etc):
+
+```shell
+$ tox -e venv -- niet -h
+...
+venv run-test: commands[0] | niet -h
+usage: niet [-h] [-f {json,yaml,eval,newline,ifs,squote,dquote}] [-i]
+            [-o OUTPUT_FILE] [-s] [-v]
+            object [file]
+...
+___________________ summary ______________
+  venv: commands succeeded
+  congratulations :)
+
+$ tox -e venv -- niet -v
+niet version <related version>
 ```
 
 #### Make your changes
@@ -123,25 +137,6 @@ Make our changes:
 $ vim <file-to-edit>
 $ git commit -am 'I did some changes'
 ```
-
-#### Local checks
-
-Install pbr:
-```shell
-$ pip install pbr
-```
-
-Build locally and install currently version under development:
-```shell
-$ python setup.py develop
-```
-
-Test niet:
-```shell
-$ niet -v
-niet version 1.7.1.dev3
-```
-Current version under development is installed and can be tested.
 
 #### Ensure everything work fine
 
@@ -168,6 +163,7 @@ Security analyze:
 ```shell
 bandit -r niet
 ```
+
 
 ### Pull Requests
 
