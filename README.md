@@ -415,29 +415,6 @@ Yaml output format force output to be in YAML regardless the input file format.
 #### json
 Json output format force output to be in JSON regardless the input file format.
 
-### Result not found
-
-By default when no results was found niet display a specific message and return
-the error code `1`, example:
-```sh
-$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "3"]}}' | niet fizz.gogo
-Element not found: fizz.gogo
-$ echo $?
-1
-```
-
-You can avoid this behavior by passing niet into a silent mode.
-
-Silent mode allow you to hide the specific message error but continue to return
-a status code equal to `1` when the key was not found.
-
-You can use the silent mode by using the flag `-s/--silent`, example:
-```sh
-$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "3"]}}' | niet fizz.gogo -s
-$ echo $?
-1
-```
-
 ### Read data from a web resource
 
 Niet allow you to read data (json/yaml) from a web resource accessible by using
@@ -499,6 +476,29 @@ $ eval $(niet oslo.ptl.name \
 $ echo "${oslo_ptl_name}" # now display your evaluated result
 $ # Convert original distant yaml file into json
 $ niet . https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f json
+```
+
+### Result not found
+
+By default when no results was found niet display a specific message and return
+the error code `1`, example:
+```sh
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "3"]}}' | niet fizz.gogo
+Element not found: fizz.gogo
+$ echo $?
+1
+```
+
+You can avoid this behavior by passing niet into a silent mode.
+
+Silent mode allow you to hide the specific message error but continue to return
+a status code equal to `1` when the key was not found.
+
+You can use the silent mode by using the flag `-s/--silent`, example:
+```sh
+$ echo '{"foo": "bar", "fizz": {"buzz": ["1", "2", "3"]}}' | niet fizz.gogo -s
+$ echo $?
+1
 ```
 
 ### Deal with errors
