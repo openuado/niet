@@ -36,7 +36,16 @@ $ pip install -U niet
 
 ## Requirements
 
-- Python 2.7 / Python 3+
+- Python 3.6 or higher
+
+## Supported versions
+
+Since niet 2.0 the support of python 2.7 have been dropped so if
+if you only have python 2.7 at hands then you can use previous version (lower
+to 2.0) but you should consider first that the no support will be given on
+these versions (no bugfix, no new feature, etc). If you report an issue or
+or propose a new feature then they will be addressed only for current or
+higher version.
 
 ## Usage
 
