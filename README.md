@@ -426,38 +426,35 @@ or yaml).
 Here is some examples with the [openstack governance's projects data](https://github.com/openstack/governance/blob/master/reference/projects.yaml):
 
 ```sh
-$ # List all the oslo projects (https://wiki.openstack.org/wiki/Oslo)
-$ niet oslo.deliverables \
+$ # List all the oslo projects repos (https://wiki.openstack.org/wiki/Oslo)
+$ niet "oslo.deliverables.*.repos[0]" \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
-automaton:
-  repos:
-  - openstack/automaton
-  tags:
-  - stable:follows-policy
-castellan:
-  repos:
-  - openstack/castellan
-  tags:
-  - stable:follows-policy
-  - vulnerability:managed
+openstack/automaton
+openstack/castellan
 ...
-futurist:
-  repos:
-  - openstack/futurist
-  tags:
-  - stable:follows-policy
+openstack/debtcollector
 ...
-oslo.cache:
-  repos:
-  - openstack/oslo.cache
-  tags:
-  - stable:follows-policy
-pbr:
-  repos:
-  - openstack/pbr
-  tags:
-  - stable:follows-policy
+openstack/futurist
+openstack/oslo.cache
+openstack/oslo.concurrency
+openstack/oslo.config
+openstack/oslo.context
+openstack/oslo.db
+openstack/oslo.i18n
+openstack/oslo.limit
+openstack/oslo.log
+openstack/oslo.messaging
+openstack/oslo.middleware
+openstack/oslo.policy
 ...
+openstack/oslo.service
+openstack/osprofiler
+openstack/pbr
+...
+openstack/stevedore
+openstack/taskflow
+openstack/tooz
+openstack/whereto
 $ niet oslo.service \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
 Common libraries
@@ -477,6 +474,9 @@ $ echo "${oslo_ptl_name}" # now display your evaluated result
 $ # Convert original distant yaml file into json
 $ niet . https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f json
 ```
+
+For further examples of filters and selections please take a look to
+[the jmespath's doc](https://jmespath.org/examples.html).
 
 ### Result not found
 
