@@ -7,6 +7,7 @@ from jmespath import search
 from jmespath.exceptions import LexerError
 
 import niet.output as output
+import niet.url
 
 import pkg_resources
 
@@ -53,6 +54,14 @@ def get_epilog():
     return epilog
 
 
+class ContentType(argparse.FileType):
+
+    def __call__(self, string):
+        if niet.url.is_webresource(string):
+            return string
+        return super().__call__(string)
+
+
 # arguments parsing
 def argparser():
     epilog = '''output formats:\n{}'''.format(get_epilog())
@@ -65,8 +74,9 @@ def argparser():
                         help="Path to object separated by dot (.). \
                         Use '.' to get whole file. \
                         eg: a.b.c")
-    parser.add_argument('file', nargs='?', type=argparse.FileType(),
-                        help="Optional JSON or YAML filename. \
+    parser.add_argument('file', nargs='?', type=ContentType(),
+                        help="Optional JSON or YAML local filename or \
+                        distant web resource at raw format. \
                         If not provided niet read from stdin")
     parser.add_argument('-f', '--format', type=str,
                         choices=[key for key in VALID_PRINTERS],
@@ -150,6 +160,9 @@ def print_result(res, out_format, in_format, search, out_file):
 
 
 def get_data(infile):
+    # NOTE(hberaud): if infile is a string then we deal with a web resource
+    if isinstance(infile, str):
+        return infile
     with infile:
         return infile.read()
 
@@ -166,10 +179,20 @@ def main():
         sys.exit(0)
     args = argparser()
     infile = args.file or sys.stdin
-    infilename = args.file.name if args.file else ""
+    if isinstance(infile, str):
+        # NOTE(hberaud): We consider we using a web resource if
+        # infile is a string
+        infile = niet.url.fetch(infile)
+    else:
+        # NOTE(hberaud): web resources can't be modified in place so we
+        # don't need to do this
+        infilename = args.file.name if args.file else ""
     search = args.object
     dataset = get_data(infile)
-    infile.close()
+    # NOTE(hberaud): if infile is a string then we deal with a web resource
+    # else (not a string) infile is a file pointer who must be closed
+    if not isinstance(infile, str):
+        infile.close()
     out_format = args.format
     out_file = args.output
     silent = args.silent

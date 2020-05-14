@@ -22,6 +22,7 @@ You can easily convert YAML format into JSON format and vice versa.
 - Extract values from json format
 - Extract values from yaml format
 - Automaticaly detect format (json/yaml)
+- Read data from a web resource
 - Read data from file or pass data from stdin
 - Format output values
 - Format output to be reused by shell `eval`
@@ -192,6 +193,68 @@ $ echo $NAME
 my-project
 $ niet project.'"test-dash"' /path/to/your/file.json
 value
+```
+
+### Read data from a web resource
+
+Niet allow you to read data (json/yaml) from a web resource accessible by using
+the HTTP protocole.
+
+This can be done by passing an url to niet which refer to a raw content (json
+or yaml).
+
+Here is some examples with the [openstack governance's projects data](https://github.com/openstack/governance/blob/master/reference/projects.yaml):
+
+```sh
+$ # List all the oslo projects (https://wiki.openstack.org/wiki/Oslo)
+$ niet oslo.deliverables \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
+automaton:
+  repos:
+  - openstack/automaton
+  tags:
+  - stable:follows-policy
+castellan:
+  repos:
+  - openstack/castellan
+  tags:
+  - stable:follows-policy
+  - vulnerability:managed
+...
+futurist:
+  repos:
+  - openstack/futurist
+  tags:
+  - stable:follows-policy
+...
+oslo.cache:
+  repos:
+  - openstack/oslo.cache
+  tags:
+  - stable:follows-policy
+pbr:
+  repos:
+  - openstack/pbr
+  tags:
+  - stable:follows-policy
+...
+$ # Get the name of the oslo PTL
+$ niet oslo.service \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
+Common libraries
+$ niet oslo.mission \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
+To produce a set of python libraries containing code shared by OpenStack projects.
+The APIs provided by these libraries should be high quality, stable, consistent,
+documented and generally applicable.
+$ eval $(niet oslo.service \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f eval) && \
+    test "${oslo_service}" = "Common libraries"
+$ eval $(niet oslo.ptl.name \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f eval)
+$ echo "${oslo_ptl_name}" # now display your evaluated result
+$ # Convert original distant yaml file into json
+$ niet . https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f json
 ```
 
 ### Object Identifiers
