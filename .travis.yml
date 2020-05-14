@@ -35,6 +35,8 @@ script:
 - niet project.'"test-dash"' tests/samples/sample.json -f eval
 - niet project.list tests/samples/sample.json -f eval
 - niet project tests/samples/sample.json -f eval
+# NOTE(hberaud): need to dig more on the next line
+#- eval $(niet oslo.service https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f eval) && test "${oslo_service}" = "Common libraries"
 - eval $(niet project tests/samples/sample.json -f eval) && test "${project__foo}" = "bar"
 - niet -f yaml .project tests/samples/sample.yaml -o test.yaml && test -f test.yaml && ! grep '^project:$' test.yaml
 - cp test.yaml test.old.yaml && niet -f yaml .list test.yaml -i && ! diff test.old.yaml
