@@ -238,10 +238,10 @@ pbr:
   tags:
   - stable:follows-policy
 ...
-$ # Get the name of the oslo PTL
 $ niet oslo.service \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
 Common libraries
+$ # Get the openstack oslo's mission
 $ niet oslo.mission \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
 To produce a set of python libraries containing code shared by OpenStack projects.
@@ -250,6 +250,7 @@ documented and generally applicable.
 $ eval $(niet oslo.service \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f eval) && \
     test "${oslo_service}" = "Common libraries"
+$ # Get the name of the oslo PTL
 $ eval $(niet oslo.ptl.name \
     https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml -f eval)
 $ echo "${oslo_ptl_name}" # now display your evaluated result
