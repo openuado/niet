@@ -1,6 +1,16 @@
 CHANGES
 =======
 
+2.1.0
+-----
+
+* [feature] allow niet to work on web resources (distant JSON/YAML file)
+
+2.0
+---
+
+* drop support of python 2.7
+
 1.8.2
 -----
 
