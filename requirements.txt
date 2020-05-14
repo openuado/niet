@@ -1,3 +1,2 @@
 PyYAML==5.1
-future==0.17.1
 jmespath==0.9.4
