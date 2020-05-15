@@ -29,10 +29,10 @@ def print_ifs(res):
     return res
 
 
-def print_newline(res):
+def _formate_result_with_delimiter(res, delimiter):
     if isinstance(res, list):
         try:
-            return '\n'.join(res)
+            return delimiter.join(map(str, res))
         except TypeError:
             result = []
             for el in res:
@@ -40,6 +40,14 @@ def print_newline(res):
             return "".join(result)
     else:
         return res
+
+
+def print_newline(res):
+    return _formate_result_with_delimiter(res, delimiter='\n')
+
+
+def print_comma(res):
+    return _formate_result_with_delimiter(res, delimiter=',')
 
 
 def _findevalitem(obj, base=""):

@@ -54,7 +54,7 @@ higher version.
 
 ```shell
 $ niet --help
-usage: niet [-h] [-f {json,yaml,eval,newline,ifs,squote,dquote}] [-s] [-v]
+usage: niet [-h] [-f {json,yaml,eval,newline,ifs,squote,dquote,comma}] [-s] [-v]
             object [file]
 
 Read data from YAML or JSON file
@@ -67,7 +67,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f {json,yaml,eval,newline,ifs,squote,dquote}, --format {json,yaml,eval,newline,ifs,squote,dquote}
+  -f {json,yaml,eval,newline,ifs,squote,dquote,comma}, --format {json,yaml,eval,newline,ifs,squote,dquote,comma}
                         output format
   -i, --in-place        Perform modification in place. Will so alter read file
   -o OUTPUT_FILE, --output OUTPUT_FILE
@@ -79,13 +79,14 @@ optional arguments:
                         --version)
 
 output formats:
-  json  Return object in JSON
-  yaml  Return object in YAML
-  eval  Return result in a string evaluable by a shell eval command as an input
+  json          Return object in JSON
+  yaml          Return object in YAML
+  eval          Return result in a string evaluable by a shell eval command as an input
   newline       Return all elements of a list in a new line
-  ifs   Return all elements of a list separated by IFS env var
+  ifs           Return all elements of a list separated by IFS env var
   squote        Add single quotes to result
   dquote        Add double quotes to result
+  comma         Return all elements separated by commas
 ```
 
 ### With Json from stdin
@@ -364,13 +365,42 @@ $ IFS="|" niet .project.list /path/to/your/file.yaml -f dquote
 ```
 
 #### newline
-Newline output format print one value of a list or a single value per line.
-This format is usefull using shell while read loop. eg:
+
+`newline` output format print one value of a list or a single value per line.
+
+The `newline` format is mostly usefull with shell while read loops and
+with script interactions.
+
+Example:
 ```sh
 while read value: do
     echo $value
 done < $(niet --format newline project.list your-file.json)
 ```
+
+#### comma
+
+`comma` output format print results on the same line and separated by commas.
+
+The `comma` format allow you to format your outputs to consume your results
+with other commands lines interfaces. By example some argument parser
+allow you to pass multi values for the same parameter (the
+[beagle command](https://beagle-hound.readthedocs.io/en/latest/) per
+example allow you to
+[repeat the `--repo` option](https://beagle-hound.readthedocs.io/en/latest/cli/index.html#cmdoption-beagle-search-repo)).
+
+Example of integration with beagle and shell:
+
+```sh
+$ OSLO_PROJECTS_URL=https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
+$ beagle search \
+    -f link \
+    --repo $(niet "oslo.deliverables.*.repos[0]" ${OSLO_PROJECTS_URL} -f comma) 'venv'
+```
+
+The previous command will return all the links of files
+who contains `venv` on the openstack oslo's scope of projects (pbr,
+taskflow, oslo.messaging, etc).
 
 #### eval
 

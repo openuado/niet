@@ -44,13 +44,21 @@ VALID_PRINTERS = {
         "cmd": output.print_dquote,
         "epilog": "Add double quotes to result",
     },
+    "comma": {
+        "cmd": output.print_comma,
+        "epilog": "Return all elements separated by commas",
+    },
 }
 
 
 def get_epilog():
     epilog = ""
+    indent_max = max(VALID_PRINTERS.keys(), key=len)
     for item in VALID_PRINTERS:
-        epilog += "  {}\t{}\n".format(item, VALID_PRINTERS[item]["epilog"])
+        epilog += "  {item}{indent}\t{epilog}\n".format(
+            item=item,
+            indent=" " * (len(indent_max) - len(item)),
+            epilog=VALID_PRINTERS[item]["epilog"])
     return epilog
 
 
