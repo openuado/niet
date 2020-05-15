@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+2.2.0
+-----
+
+* [feature] adding the comma output format
+* [fix] improve alignement on the help's format
+* [fix] rename unit test module
+
 2.1.0
 -----
 
