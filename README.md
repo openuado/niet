@@ -402,6 +402,26 @@ The previous command will return all the links of files
 who contains `venv` on the openstack oslo's scope of projects (pbr,
 taskflow, oslo.messaging, etc).
 
+Else another with a more reduced scope on openstack oslo's projects:
+
+```sh
+$ niet "oslo.deliverables.*.repos[0][?contains(@, \`oslo\`) == \`true\`]" \
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml \
+    -f comma
+openstack/oslo-cookiecutter,openstack/oslo-specs,openstack/oslo.cache,
+openstack/oslo.concurrency,openstack/oslo.config,openstack/oslo.context,
+openstack/oslo.db,openstack/oslo.i18n,openstack/oslo.limit,openstack/oslo.log,
+openstack/oslo.messaging,openstack/oslo.middleware,
+openstack/oslo.policy,openstack/oslo.privsep,openstack/oslo.reports,
+openstack/oslo.rootwrap,openstack/oslo.serialization,openstack/oslo.service,
+openstack/oslo.tools,openstack/oslo.upgradecheck,openstack/oslo.utils,
+openstack/oslo.versionedobjects,openstack/oslo.vmware,openstack/oslotest
+```
+
+In the previous example we retrieve only the projects repos who contains
+`oslo` in their names, so other projects like `taskflow`, `pbr`, etc will
+be ignored.
+
 #### eval
 
 Eval output format allow you to eval output string to initialize shell
