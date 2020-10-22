@@ -138,6 +138,16 @@ $ vim <file-to-edit>
 $ git commit -am 'I did some changes'
 ```
 
+Notice that a debug mode is available and can be easily used during your
+development to dive deep in your execution and observe what happen
+step by step, example:
+
+```
+tox -e venv -- niet --debug \
+    oslo.deliverables\
+    https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml
+```
+
 #### Ensure everything work fine
 
 Every following checks are automaticaly executed on pull requests so need to

@@ -77,6 +77,7 @@ optional arguments:
                         not found
   -v, --version         print the Niet version number and exit (also
                         --version)
+  --debug               Activate the debug mode (based on pdb)
 
 output formats:
   json          Return object in JSON
@@ -694,6 +695,9 @@ You can pass your search with or without quotes like this:
 $ niet project.meta.name your-file.yaml
 $ niet "project.meta.name" your-file.yaml
 ```
+
+You can execute `niet` step by step by using the debug mode. It will allow
+you to inspect your execution during your debug sessions.
 
 ## Contribute
 
