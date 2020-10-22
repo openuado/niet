@@ -101,6 +101,8 @@ def argparser():
     parser.add_argument('-v', '--version', action='store_true',
                         help="print the Niet version number and \
                         exit (also --version)")
+    parser.add_argument('--debug', action='store_true',
+                        help="Activate the debug mode (based on pdb)")
     return parser.parse_args()
 
 
@@ -186,6 +188,9 @@ def main():
         version()
         sys.exit(0)
     args = argparser()
+    if args.debug:
+        import pdb
+        pdb.set_trace()
     infile = args.file or sys.stdin
     if isinstance(infile, str):
         # NOTE(hberaud): We consider we using a web resource if
