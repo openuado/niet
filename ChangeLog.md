@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+2.3.0
+-----
+
+* Adding a debug mode to niet
+* [doc] add more examples for the `comma` format
+
 2.2.0
 -----
 
