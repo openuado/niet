@@ -14,3 +14,4 @@ lib64
 pyvenv.cfg
 venv/
 .venv/
+ChangeLog
