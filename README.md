@@ -5,6 +5,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/niet.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/niet.svg)
 [![Downloads](https://pepy.tech/badge/niet)](https://pepy.tech/project/niet)
+[![Downloads](https://pepy.tech/badge/niet/month)](https://pepy.tech/project/niet/month)
 
 Get data from yaml file directly in your shell
 
