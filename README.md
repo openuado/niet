@@ -4,7 +4,7 @@
 ![PyPI](https://img.shields.io/pypi/v/niet.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/niet.svg)
 ![PyPI - Status](https://img.shields.io/pypi/status/niet.svg)
-[![Downloads](https://img.shields.io/pypi/dm/niet.svg)](https://pypi.python.org/pypi/niet/)
+[![Downloads](https://pepy.tech/badge/niet)](https://pepy.tech/project/niet)
 
 Get data from yaml file directly in your shell
 
