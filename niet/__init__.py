@@ -2,6 +2,7 @@
 import argparse
 import json
 import sys
+import textwrap
 
 from jmespath import search
 from jmespath.exceptions import LexerError
@@ -121,7 +122,17 @@ def data_parser(dataset):
         except yaml.parser.ParserError as err:
             print(str(err))
     if not isinstance(result, (list, dict)):
-        print("Invalid file. Only support valid json and yaml input")
+        print(textwrap.dedent("""
+                Oops... An error occur.
+                You face this error because the passed file has been
+                detected as invalid. It have been detected invalid because
+                either the format of this file isn't correct or
+                unsupported.
+
+                Niet only support valid json and yaml input.
+                You can check that your file is valid by using a JSON or
+                YAML linter. https://jsonlint.com/"""
+        ))
         sys.exit(1)
     return result, in_format
 
@@ -160,7 +171,9 @@ def print_result(res, out_format, in_format, search, out_file):
             # we need to pass the search to init the eval var name
             output = VALID_PRINTERS[out_format]["cmd"](res)
     except KeyError:
-        print("Error : Invalid choice")
+        print(f"Error : Invalid choice ({out_format}). ")
+        print("Supported formats are: {format}".format(",".join(
+            VALID_PRINTERS)))
     else:
         if out_file:
             with open(out_file, "w+") as f:
