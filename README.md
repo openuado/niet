@@ -9,6 +9,8 @@
 
 Get data from YAML file directly in your shell.
 
+---
+
 > How to easily parse and retrieve data from YAML file in our shell?
 
 The previous question, few years ago, led us to the development of niet.
