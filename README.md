@@ -611,6 +611,63 @@ $ niet project.meta.name tests/samples/sample.yaml
 my-project
 ```
 
+### Complexe search
+
+Consider the following content:
+
+```
+$ cat /var/lib/libvirt/dnsmasq/virbr0.status
+[
+  {
+    "ip-address": "192.168.122.113",
+    "mac-address": "52:54:00:91:14:02",
+    "hostname": "rhel79",
+    "expiry-time": 1644251254
+  },
+  {
+    "ip-address": "192.168.122.162",
+    "mac-address": "52:54:00:23:37:ed",
+    "hostname": "satellite",
+    "expiry-time": 1644251837
+  }
+]
+```
+
+Here we want to retrieve the value of the ip-address field when the hostname
+is equal to `satellite`. The following command will allow you to get this
+value:
+
+```sh
+$ sed 's/ip/_/g' /var/lib/libvirt/dnsmasq/virbr0.status | niet "[?hostname=='satellite'].ip"
+192.168.122.162
+```
+
+You should notice that first we replace `-` by `_` by using the sed
+command. We do that because `jmespath`, the underlying library used by `niet`
+, poorly handle key that contain `-`. We chosen to replace all - by _ to avoid
+any issues elsewhere on the file
+
+Here is an exemple of an automated ssh connection in a kvm virtualised lab
+environment by looking for vmname in dhcp file with `niet` and performing the
+ssh connection to the server even if its ip changed.
+
+The ssh connection here can be performed with this command:
+
+```sh
+ssh -o ProxyCommand='nc $(sed 's/-/_/g' /var/lib/libvirt/dnsmasq/virbr0.status | niet "[?hostname=='''%h'''].ip_address") %p' root@rhel79
+```
+
+Tips - to ease that use you can for example set this `.ssh/config` entry:
+
+```
+host lab-*
+user root
+ProxyCommand /usr/bin/nc $(sed 's/-/_/g' /var/lib/libvirt/dnsmasq/virbr0.status | niet "[?hostname=='$(echo %h | cut -d'-' -f2 )'].ip_address") %p
+```
+
+And then perform a `ssh lab-rhel79` or a `ssh lab-satellite` to join all VMs
+from your lab, by the hostname prefixed by `lab-`.
+
 ### Extract a list and parse it in shell
 
 Deal with list of items
