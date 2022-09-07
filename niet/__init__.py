@@ -149,7 +149,7 @@ def get(data, keywords, silent=False):
             cursor = search(keywords, data)
         except LexerError:
             cursor = search('"{keywords}"'.format(keywords=keywords), data)
-        if not cursor:
+        if not cursor and cursor != False and cursor != 0:
             raise KeyError()
         return cursor
     except (KeyError, AttributeError):
