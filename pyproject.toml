@@ -37,7 +37,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-build = ["build", "twine"]
+dev = ["black", "isort", "pip-tools", "build", "twine", "pre-commit"]
 
 [project.scripts]
 niet = "niet.__main__:main"

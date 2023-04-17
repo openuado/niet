@@ -98,10 +98,20 @@ $ git clone https://github.com/openuado/niet
 #### Setup your environment
 
 From there, you can navigate into the directory where you've cloned
-the niet source code
+the niet source code:
 
 ```shell
 $ cd niet
+```
+
+You can install the development tools by using:
+```
+python3.11 -m pip install --editable ".[dev]"
+```
+
+And enabling `pre-commit` for niet:
+```
+$ pre-commit install
 ```
 
 `tox` allow you to use niet directly in a dedicated virtual environment
@@ -189,7 +199,7 @@ You can create your pull request manually directly from github:
 ### Deploy niet on PyPi
 
 ```
-python -m pip install build twine
+pip install --editable ".[dev]"
 python -m build
 twine check dist/*
 twine upload dist/*

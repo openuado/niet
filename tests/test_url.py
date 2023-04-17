@@ -3,26 +3,25 @@ import unittest
 
 import niet.url
 
-
 VALID_WEBRESOURCES = [
-    'https://google.com',
-    'http://google.com',
-    'https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml',  # noqa
-    'http://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml',  # noqa
-    'https://herve.beraud.io',
-    'http://herve.beraud.io',
-    'https://opensource.org/',
-    'http://opensource.org/'
+    "https://google.com",
+    "http://google.com",
+    "https://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml",  # noqa
+    "http://raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml",  # noqa
+    "https://herve.beraud.io",
+    "http://herve.beraud.io",
+    "https://opensource.org/",
+    "http://opensource.org/",
 ]
 NONVALID_RESOURCES = [
-    'google.com',
-    'google.com',
-    'raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml',  # noqa
-    'raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml',  # noqa
-    'herve.beraud.io',
-    'herve.beraud.io',
-    'opensource.org/',
-    'opensource.org/'
+    "google.com",
+    "google.com",
+    "raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml",  # noqa
+    "raw.githubusercontent.com/openstack/governance/master/reference/projects.yaml",  # noqa
+    "herve.beraud.io",
+    "herve.beraud.io",
+    "opensource.org/",
+    "opensource.org/",
 ]
 
 

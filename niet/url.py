@@ -4,7 +4,7 @@ from urllib.request import urlopen
 
 def fetch(url):
     with urlopen(url) as f:
-        return f.read().decode('utf-8')
+        return f.read().decode("utf-8")
 
 
 def is_webresource(url):

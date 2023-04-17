@@ -3,23 +3,23 @@ import os
 
 import yaml
 
-IFS = os.getenv('IFS', ' ')
+IFS = os.getenv("IFS", " ")
 
 
 # Output functions
 def print_squote(res):
     if isinstance(res, list):
         res = IFS.join(["'{}'".format(el) for el in res])
-    elif (isinstance(res, str) or isinstance(res, int)):
+    elif isinstance(res, str) or isinstance(res, int):
         res = "".join("'{}'".format(res))
     return res
 
 
 def print_dquote(res):
     if isinstance(res, list):
-        res = IFS.join(["\"{}\"".format(el) for el in res])
-    elif (isinstance(res, str) or isinstance(res, int)):
-        res = "".join("\"{}\"".format(res))
+        res = IFS.join(['"{}"'.format(el) for el in res])
+    elif isinstance(res, str) or isinstance(res, int):
+        res = "".join('"{}"'.format(res))
     return res
 
 
@@ -43,11 +43,11 @@ def _formate_result_with_delimiter(res, delimiter):
 
 
 def print_newline(res):
-    return _formate_result_with_delimiter(res, delimiter='\n')
+    return _formate_result_with_delimiter(res, delimiter="\n")
 
 
 def print_comma(res):
-    return _formate_result_with_delimiter(res, delimiter=',')
+    return _formate_result_with_delimiter(res, delimiter=",")
 
 
 def _findevalitem(obj, base=""):

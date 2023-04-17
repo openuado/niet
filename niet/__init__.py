@@ -4,16 +4,13 @@ import json
 import sys
 import textwrap
 
+import pkg_resources
+import yaml
 from jmespath import search
 from jmespath.exceptions import LexerError
 
 import niet.output as output
 import niet.url
-
-import pkg_resources
-
-import yaml
-
 
 VALID_PRINTERS = {
     "json": {
@@ -59,12 +56,12 @@ def get_epilog():
         epilog += "  {item}{indent}\t{epilog}\n".format(
             item=item,
             indent=" " * (len(indent_max) - len(item)),
-            epilog=VALID_PRINTERS[item]["epilog"])
+            epilog=VALID_PRINTERS[item]["epilog"],
+        )
     return epilog
 
 
 class ContentType(argparse.FileType):
-
     def __call__(self, string):
         if niet.url.is_webresource(string):
             return string
@@ -73,37 +70,67 @@ class ContentType(argparse.FileType):
 
 # arguments parsing
 def argparser():
-    epilog = '''output formats:\n{}'''.format(get_epilog())
+    epilog = """output formats:\n{}""".format(get_epilog())
 
     parser = argparse.ArgumentParser(
-        description='Read data from YAML or JSON file',
+        description="Read data from YAML or JSON file",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=epilog)
-    parser.add_argument('object', type=str,
-                        help="Path to object separated by dot (.). \
+        epilog=epilog,
+    )
+    parser.add_argument(
+        "object",
+        type=str,
+        help="Path to object separated by dot (.). \
                         Use '.' to get whole file. \
-                        eg: a.b.c")
-    parser.add_argument('file', nargs='?', type=ContentType(),
-                        help="Optional JSON or YAML local filename or \
+                        eg: a.b.c",
+    )
+    parser.add_argument(
+        "file",
+        nargs="?",
+        type=ContentType(),
+        help="Optional JSON or YAML local filename or \
                         distant web resource at raw format. \
-                        If not provided niet read from stdin")
-    parser.add_argument('-f', '--format', type=str,
-                        choices=[key for key in VALID_PRINTERS],
-                        help="output format")
-    parser.add_argument('-i', '--in-place', action='store_true',
-                        help="Perform modification in place. Will so alter \
-                        read file")
-    parser.add_argument('-o', '--output', type=str, metavar="OUTPUT_FILE",
-                        help="Print output in a file instead of stdout \
-                        (surcharged by in-place parameter if set)")
-    parser.add_argument('-s', '--silent', action='store_true',
-                        help="silent mode, doesn't display message when \
-                        element was not found")
-    parser.add_argument('-v', '--version', action='store_true',
-                        help="print the Niet version number and \
-                        exit (also --version)")
-    parser.add_argument('--debug', action='store_true',
-                        help="Activate the debug mode (based on pdb)")
+                        If not provided niet read from stdin",
+    )
+    parser.add_argument(
+        "-f",
+        "--format",
+        type=str,
+        choices=[key for key in VALID_PRINTERS],
+        help="output format",
+    )
+    parser.add_argument(
+        "-i",
+        "--in-place",
+        action="store_true",
+        help="Perform modification in place. Will so alter \
+                        read file",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        metavar="OUTPUT_FILE",
+        help="Print output in a file instead of stdout \
+                        (surcharged by in-place parameter if set)",
+    )
+    parser.add_argument(
+        "-s",
+        "--silent",
+        action="store_true",
+        help="silent mode, doesn't display message when \
+                        element was not found",
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="store_true",
+        help="print the Niet version number and \
+                        exit (also --version)",
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="Activate the debug mode (based on pdb)"
+    )
     return parser.parse_args()
 
 
@@ -122,7 +149,9 @@ def data_parser(dataset):
         except yaml.parser.ParserError as err:
             print(str(err))
     if not isinstance(result, (list, dict)):
-        print(textwrap.dedent("""
+        print(
+            textwrap.dedent(
+                """
                 Oops... An error occur.
                 You face this error because the passed file has been
                 detected as invalid. It have been detected invalid because
@@ -132,7 +161,8 @@ def data_parser(dataset):
                 Niet only support valid json and yaml input.
                 You can check that your file is valid by using a JSON or
                 YAML linter. https://jsonlint.com/"""
-        ))
+            )
+        )
         sys.exit(1)
     return result, in_format
 
@@ -160,7 +190,7 @@ def get(data, keywords, silent=False):
 
 def print_result(res, out_format, in_format, search, out_file):
     if out_format is None:
-        if (isinstance(res, (list, str, int, float)) or in_format is None):
+        if isinstance(res, (list, str, int, float)) or in_format is None:
             out_format = "newline"
         else:
             out_format = in_format
@@ -172,8 +202,7 @@ def print_result(res, out_format, in_format, search, out_file):
             output = VALID_PRINTERS[out_format]["cmd"](res)
     except KeyError:
         print(f"Error : Invalid choice ({out_format}). ")
-        print("Supported formats are: {format}".format(",".join(
-            VALID_PRINTERS)))
+        print("Supported formats are: {format}".format(",".join(VALID_PRINTERS)))
     else:
         if out_file:
             with open(out_file, "w+") as f:
@@ -191,18 +220,19 @@ def get_data(infile):
 
 
 def version():
-    installed = pkg_resources.get_distribution('niet').version
+    installed = pkg_resources.get_distribution("niet").version
     print("niet version {}".format(installed))
 
 
 # Main
 def main():
-    if '-v' in sys.argv or '--version' in sys.argv:
+    if "-v" in sys.argv or "--version" in sys.argv:
         version()
         sys.exit(0)
     args = argparser()
     if args.debug:
         import pdb
+
         pdb.set_trace()
     infile = args.file or sys.stdin
     if isinstance(infile, str):

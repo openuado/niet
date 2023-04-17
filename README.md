@@ -290,7 +290,7 @@ Further examples with [`jmespath` identifiers](http://jmespath.org/specification
 ### Output
 
 #### Stdout
-By default, niet print the output on stdout. 
+By default, niet print the output on stdout.
 
 #### Save output to a file
 It if possible to pass a filename using -o or --output argument to writes
@@ -302,15 +302,15 @@ It is possible to modify directly a file using -i or --in-place argument. This w
 the input file by the output of niet command. This can be used to extract some data of a file or
 reindent a file.
 
-### Output formats 
-You can change the output format using the -f or --format optional 
-argument. 
+### Output formats
+You can change the output format using the -f or --format optional
+argument.
 
 By default, niet detect the input format and display complex objects
 in the same format. If the object is a list or a value, newline output
 format will be used.
 
-Output formats are: 
+Output formats are:
   - ifs
   - squote
   - dquote
@@ -475,7 +475,7 @@ one
 two
 three
 ```
- 
+
 #### yaml
 Yaml output format force output to be in YAML regardless the input file format.
 
@@ -603,7 +603,7 @@ project:
         - item3
 ```
 
-### Extract a single value 
+### Extract a single value
 
 Retrieve the project name:
 ```sh
@@ -743,7 +743,7 @@ $ niet . tests/samples/sample.yaml -f json
 
 This is an example of how to indent a JSON file :
 ```shell
-$ niet . tests/samples/sample_not_indented.json 
+$ niet . tests/samples/sample_not_indented.json
 {
     "project": {
         "meta": {
