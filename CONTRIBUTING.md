@@ -161,12 +161,12 @@ $ tox -e pep8
 
 Unit tests:
 ```shell
-$ tox # by default run tests en python 2.7, 3.4, 3.5, 3.6
+$ tox # by default run tests with all the python versions specified in tox.ini
 ```
 
 > Note: If you have just a specific version of python installed on your system, you can test like this:
 ```shell
-$ tox -e py35 # test with python 3.5
+$ tox -e py311 # test with python 3.11
 ```
 
 Security analyze:
@@ -189,8 +189,8 @@ You can create your pull request manually directly from github:
 ### Deploy niet on PyPi
 
 ```
-pip install pbr
-python setup.py build
-python setup.py sdist
+python -m pip install build twine
+python -m build
+twine check dist/*
 twine upload dist/*
 ```

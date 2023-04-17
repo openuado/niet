@@ -1,5 +1,5 @@
 *.eggs/
-niet.egg-info/
+*.egg-info/
 *__pycache__*
 build/
 .tox/
