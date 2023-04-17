@@ -1,0 +1,50 @@
+[build-system]
+requires = [
+  "hatch-vcs>=0.3",
+  "hatchling>=1.12.2",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "niet"
+authors = [
+    {name = "Hervé Beraud", email = "herveberaud.pro@gmail.com"},
+]
+description = "A command-line tool to work with YAML and JSON files."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+url.Homepage = "https://github.com/openuado/niet"
+url.Source = "https://github.com/openuado/niet"
+url.Tracker = "https://github.com/openuado/niet/issues"
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+    "Topic :: Utilities"
+]
+dynamic = ["version"]
+dependencies = [
+    "pyyaml>=5.1",
+    "jmespath>=0.9.4",
+]
+
+[project.optional-dependencies]
+build = ["build", "twine"]
+
+[project.scripts]
+niet = "niet.__main__:main"
+
+[options.packages.find]
+where = "niet"
+exclude = "tests*"
+
+[tool.hatch]
+version.source = "vcs"
