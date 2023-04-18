@@ -5,6 +5,7 @@ Not yet released
 ----------------
 
 * [feature] the toml format is now supported by niet (https://github.com/openuado/niet/pull/77)
+* [CI/CD] move away from travis CI and fix existing github actions
 
 3.0.0
 -----

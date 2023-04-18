@@ -1,4 +1,2 @@
-fixtures
-tox
-bandit
-nose
+pytest
+pre-commit

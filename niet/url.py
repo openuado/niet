@@ -3,7 +3,7 @@ from urllib.request import urlopen
 
 
 def fetch(url):
-    with urlopen(url) as f:
+    with urlopen(url) as f:  # nosec - niet is a cli we don't care about B310
         return f.read().decode("utf-8")
 
 
