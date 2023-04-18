@@ -5,6 +5,7 @@ import sys
 import textwrap
 
 import pkg_resources
+import pytoml as toml
 import yaml
 from jmespath import search
 from jmespath.exceptions import LexerError
@@ -20,6 +21,10 @@ VALID_PRINTERS = {
     "yaml": {
         "cmd": output.print_yaml,
         "epilog": "Return object in YAML",
+    },
+    "toml": {
+        "cmd": output.print_toml,
+        "epilog": "Return object in TOML",
     },
     "eval": {
         "cmd": output.print_eval,
@@ -144,10 +149,12 @@ def data_parser(dataset):
         try:
             result = yaml.safe_load(dataset)
             in_format = "yaml"
-        except yaml.constructor.ConstructorError as err:
-            print(str(err))
-        except yaml.parser.ParserError as err:
-            print(str(err))
+        except (yaml.constructor.ConstructorError, yaml.parser.ParserError) as err:
+            try:
+                result = toml.loads(dataset)
+                in_format = "toml"
+            except toml.core.TomlError as err:
+                print(str(err))
     if not isinstance(result, (list, dict)):
         print(
             textwrap.dedent(
@@ -158,7 +165,7 @@ def data_parser(dataset):
                 either the format of this file isn't correct or
                 unsupported.
 
-                Niet only support valid json and yaml input.
+                Niet only support valid json, yaml, and toml input.
                 You can check that your file is valid by using a JSON or
                 YAML linter. https://jsonlint.com/"""
             )
