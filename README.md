@@ -7,7 +7,7 @@
 [![Downloads](https://pepy.tech/badge/niet)](https://pepy.tech/project/niet)
 [![Downloads](https://pepy.tech/badge/niet/month)](https://pepy.tech/project/niet/month)
 
-Get data from YAML file directly in your shell.
+Get data from YAML, JSON, and TOML file directly in your shell.
 
 ---
 
@@ -20,30 +20,35 @@ needs. We created niet to read those data. The goal was to develop a tools
 that will allow us to standardize how we parse YAML locally or in our CI
 pipelines. We wanted something reusable and easily distribuable. Niet was born.
 
+Over the years niet evolved to introduce the support of other formats like
+TOML.
+
 Niet is like [xmllint](http://xmlsoft.org/xmllint.html) or
-[jq](https://stedolan.github.io/jq/) but for YAML and JSON data -
+[jq](https://stedolan.github.io/jq/) but for YAML, JSON and TOML data -
 you can use it to slice and filter and map and transform structured data.
 
 You can easily retrieve data by using simple expressions or using
 xpath advanced features to access non-trivial data.
 
-You can easily convert YAML format into JSON format and vice versa.
+You can easily convert YAML format into JSON, or TOML formats and vice versa.
 
 Niet is writen in Python so you can install it from a package manager (from
 PyPi) or directly by cloning this repository - no specific system rights are
 needed to install it.
 
-## Features
+## Main Features
 - Extract elements by using xpath syntax
-- Extract values from json format
-- Extract values from yaml format
+- Extract values from JSON format
+- Extract values from YAML format
+- Extract values from TOML format
 - Automaticaly detect format (json/yaml)
 - Read data from a web resource
 - Read data from file or pass data from stdin
 - Format output values
 - Format output to be reused by shell `eval`
-- Convert YAML to JSON
-- Convert JSON to YAML
+- Convert YAML to JSON, or TOML
+- Convert JSON to YAML, or TOML
+- Convert TOML to YAML, or JSON
 
 ## Install or Update niet
 
@@ -53,13 +58,13 @@ $ pip install -U niet
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.9 or higher
 
 ## Supported versions
 
 Since niet 2.0 the support of python 2.7 have been dropped so if
 if you only have python 2.7 at hands then you can use previous version (lower
-to 2.0) but you should consider first that the no support will be given on
+to 2.0) but you should consider first that no support will be given on
 these versions (no bugfix, no new feature, etc). If you report an issue or
 or propose a new feature then they will be addressed only for current or
 higher version.
@@ -70,7 +75,7 @@ higher version.
 
 ```shell
 $ niet --help
-usage: niet [-h] [-f {json,yaml,eval,newline,ifs,squote,dquote,comma}] [-s] [-v]
+usage: niet [-h] [-f {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}] [-s] [-v]
             object [file]
 
 Read data from YAML or JSON file
@@ -83,7 +88,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f {json,yaml,eval,newline,ifs,squote,dquote,comma}, --format {json,yaml,eval,newline,ifs,squote,dquote,comma}
+  -f {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}, --format {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}
                         output format
   -i, --in-place        Perform modification in place. Will so alter read file
   -o OUTPUT_FILE, --output OUTPUT_FILE
@@ -98,6 +103,7 @@ optional arguments:
 output formats:
   json          Return object in JSON
   yaml          Return object in YAML
+  toml          Return object in TOML
   eval          Return result in a string evaluable by a shell eval command as an input
   newline       Return all elements of a list in a new line
   ifs           Return all elements of a list separated by IFS env var
@@ -317,6 +323,7 @@ Output formats are:
   - newline
   - yaml
   - json
+  - toml
 
 #### ifs
 Ifs output format print all values of a list or a single value in one line.
@@ -477,18 +484,21 @@ three
 ```
 
 #### yaml
-Yaml output format force output to be in YAML regardless the input file format.
+YAML output format force output to be in YAML regardless the input file format.
 
 #### json
-Json output format force output to be in JSON regardless the input file format.
+JSON output format force output to be in JSON regardless the input file format.
+
+#### toml
+TOML output format force output to be in TOML regardless the input file format.
 
 ### Read data from a web resource
 
-Niet allow you to read data (json/yaml) from a web resource accessible by using
-the HTTP protocole (introduced in niet 2.1).
+Niet allow you to read data (json/yaml/toml) from a web resource accessible by
+using the HTTP protocole (introduced in niet 2.1).
 
-This can be done by passing an url to niet which refer to a raw content (json
-or yaml).
+This can be done by passing an url to niet which refer to a raw content (json,
+yaml, or toml).
 
 Here is some examples with the [openstack governance's projects data](https://github.com/openstack/governance/blob/master/reference/projects.yaml):
 
@@ -704,9 +714,9 @@ $ niet .meta.name <<< $project
 my-project
 ```
 
-### Transform JSON to YAML
+### Transform JSON into YAML
 
-With niet you can easily convert your JSON to YAML
+With niet you can easily convert your JSON into YAML
 ```shell
 $ niet . tests/samples/sample.json -f yaml
 project:
@@ -719,9 +729,9 @@ project:
     name: my-project
 ```
 
-### Transform YAML to JSON
+### Transform YAML into JSON
 
-With niet you can easily convert your YAML to JSON
+With niet you can easily convert your YAML into JSON
 ```shell
 $ niet . tests/samples/sample.yaml -f json
 {
@@ -737,6 +747,50 @@ $ niet . tests/samples/sample.yaml -f json
         ]
     }
 }
+```
+
+### Transform JSON into TOML
+
+With niet you can easily convert your JSON into TOML
+```shell
+$ niet . tests/samples/sample.json -f toml
+[project]
+foo = "bar"
+list = ["item1", "item2", "item3"]
+test-dash = "value"
+
+[project.meta]
+name = "my-project"
+```
+
+### Transform YAML into TOML
+
+With niet you can easily convert your YAML into TOML
+```shell
+$ niet . tests/samples/sample.yaml -f toml
+[project]
+foo = "bar"
+list = ["item1", "item2", "item3"]
+test-dash = "value"
+
+[project.meta]
+name = "my-project"
+```
+
+### Transform TOML into YAML
+
+With niet you can easily convert your TOML into YAML
+```shell
+niet . tests/samples/sample.toml -f yaml
+project:
+  foo: bar
+  list:
+  - item1
+  - item2
+  - item3
+  meta:
+    name: my-project
+  test-dash: value
 ```
 
 ### Indent JSON file

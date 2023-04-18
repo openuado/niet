@@ -1,6 +1,7 @@
 import json
 import os
 
+import pytoml as toml
 import yaml
 
 IFS = os.getenv("IFS", " ")
@@ -90,3 +91,11 @@ def print_yaml(res):
 
 def print_json(res):
     return json.dumps(res, indent=4)
+
+
+def print_toml(res):
+    try:
+        return toml.dumps(res)
+    # (hberaud) Catch cases when only the value of a key is captured
+    except AttributeError:
+        return res
