@@ -4,7 +4,7 @@ CHANGES
 Not yet released
 ----------------
 
-* [feature] the toml format is now supported by niet
+* [feature] the toml format is now supported by niet (https://github.com/openuado/niet/pull/77)
 
 3.0.0
 -----
@@ -15,7 +15,7 @@ Not yet released
 2.5.0
 -----
 
-* [fix] return key equal to False and 0 rather than raising an element not found (#72)
+* [fix] return key equal to False and 0 rather than raising an element not found (https://github.com/openuado/niet/issues/72)
 * [requirements] bump PyYAML from version 5.1 to version 5.4.1
 * [doc] improve documentation and error messages
 
