@@ -3,6 +3,7 @@ import argparse
 import json
 import sys
 import textwrap
+from importlib.metadata import version as getversion
 
 import pkg_resources
 import pytoml as toml
@@ -227,8 +228,7 @@ def get_data(infile):
 
 
 def version():
-    installed = pkg_resources.get_distribution("niet").version
-    print("niet version {}".format(installed))
+    print("niet version: {}".format(getversion("niet")))
 
 
 # Main
