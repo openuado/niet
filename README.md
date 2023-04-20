@@ -38,17 +38,13 @@ needed to install it.
 
 ## Main Features
 - Extract elements by using xpath syntax
-- Extract values from JSON format
-- Extract values from YAML format
-- Extract values from TOML format
+- Extract values from JSON, YAML, and TOML format
 - Automaticaly detect format (json/yaml)
 - Read data from a web resource
 - Read data from file or pass data from stdin
 - Format output values
 - Format output to be reused by shell `eval`
-- Convert YAML to JSON, or TOML
-- Convert JSON to YAML, or TOML
-- Convert TOML to YAML, or JSON
+- Convert YAML to JSON, or TOML and vice versa
 
 ## Install or Update niet
 
@@ -75,29 +71,27 @@ higher version.
 
 ```shell
 $ niet --help
-usage: niet [-h] [-f {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}] [-s] [-v]
-            object [file]
+usage: niet [-h] [-a ADDITIONAL_OBJECTS [ADDITIONAL_OBJECTS ...]] [-f {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}] [-i] [-o OUTPUT_FILE] [-s] [-v] [--debug] object [file]
 
 Read data from YAML or JSON file
 
 positional arguments:
-  object                Path to object separated by dot (.). Use '.' to get
-                        whole file. eg: a.b.c
-  file                  Optional JSON or YAML filename. If not provided niet
-                        read from stdin
+  object                Path to object. Based on jsmespath identifiers (https://jmespath.org/specification.html#identifiers) Use '.' to get whole file. (eg: a.b.c)
+  file                  Optional JSON or YAML local filename or distant web resource at raw format. If not provided niet read from stdin
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
+  -a ADDITIONAL_OBJECTS [ADDITIONAL_OBJECTS ...], --additional-objects ADDITIONAL_OBJECTS [ADDITIONAL_OBJECTS ...]
+                        Path to additional objects to search. Here you can pass a list of additional researchs. Allow you to combine researchs into the same command call. The researchs will be made on the original file as with the
+                        `object` parameter. Niet will output the results sequentially without delimiter between the results. If the `--output` argument is given by user, the results are appended at the end of the file sequentially. Based
+                        on jsmespath identifiers (https://jmespath.org/specification.html#identifiers) Use '.' to get whole file. (eg: a.b.c)
   -f {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}, --format {json,yaml,toml,eval,newline,ifs,squote,dquote,comma}
                         output format
   -i, --in-place        Perform modification in place. Will so alter read file
   -o OUTPUT_FILE, --output OUTPUT_FILE
-                        Print output in a file instead of stdout (surcharged
-                        by infile parameter if set)
-  -s, --silent          silent mode, doesn't display message when element was
-                        not found
-  -v, --version         print the Niet version number and exit (also
-                        --version)
+                        Print output in a file instead of stdout (surcharged by in-place parameter if set)
+  -s, --silent          silent mode, doesn't display message when element was not found
+  -v, --version         print the Niet version number and exit (also --version)
   --debug               Activate the debug mode (based on pdb)
 
 output formats:
@@ -237,7 +231,7 @@ $ echo $?
 See the [related section](#deal-with-errors) for more info on how to manage
 errors with `niet`.
 
-Niet is based on `jmespath` to find results so for complex research you can
+Niet is based on `jmespath` to find results so for complexe research you can
 refer to the [jmespath specifications](http://jmespath.org/specification.html#identifiers)
 to use identifiers properly.
 
@@ -292,6 +286,49 @@ niet project.'"test-dash"' tests/sample/sample.json
 ```
 
 Further examples with [`jmespath` identifiers](http://jmespath.org/specification.html#examples).
+
+### Additional objects
+
+Additional objects allow you to combine more than one query.
+The `--additional-objects` parameter accept a list of objects strings.
+These objects are the same thing that the base object used to query
+your inputs.
+
+This parameter allow to generate advanced output from your input, let see an
+example:
+
+Consider the following yaml example:
+```
+configuration:
+  warehouse: warehouse-name
+  database: database-name
+  object_type:
+      schema:
+        schema1: "/path/to/schema1.sql"
+        schema2: "/path/to/schema2.sql"
+```
+
+The following command will allow us to generate an output constitued from the
+results of the two objects used as query:
+
+```
+$ niet ".configuration.object_type | keys(@)[0]" config.yaml
+-a ".configuration.object_type.schema.[keys(@)[0], values(@)[0]]"
+```
+
+The previous command will output:
+
+```
+schema
+schema1
+/path/to/schema1.sql
+```
+
+This output wouldn't be possible without combining the result of two queries,
+the additional objects are made for that.
+
+Outputs of these additional objects are printed sequentially in the order they
+are given in the command line.
 
 ### Output
 

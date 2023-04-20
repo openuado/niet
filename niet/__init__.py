@@ -86,9 +86,10 @@ def argparser():
     parser.add_argument(
         "object",
         type=str,
-        help="Path to object separated by dot (.). \
+        help="Path to object. Based on jsmespath identifiers \
+                        (https://jmespath.org/specification.html#identifiers) \
                         Use '.' to get whole file. \
-                        eg: a.b.c",
+                        (eg: a.b.c)",
     )
     parser.add_argument(
         "file",
@@ -97,6 +98,24 @@ def argparser():
         help="Optional JSON or YAML local filename or \
                         distant web resource at raw format. \
                         If not provided niet read from stdin",
+    )
+    parser.add_argument(
+        "-a",
+        "--additional-objects",
+        nargs="+",
+        help="Path to additional objects to search. Here you can pass a list \
+                        of additional researchs. Allow you to combine \
+                        researchs into the same command call. \
+                        The researchs will be made on the original file as with \
+                        the `object` parameter. \
+                        Niet will output the results sequentially without \
+                        delimiter between the results. \
+                        If the `--output` argument is given by user, the results \
+                        are appended at the end of the file sequentially. \
+                        Based on jsmespath identifiers \
+                        (https://jmespath.org/specification.html#identifiers) \
+                        Use '.' to get whole file. \
+                        (eg: a.b.c)",
     )
     parser.add_argument(
         "-f",
@@ -196,7 +215,7 @@ def get(data, keywords, silent=False):
         sys.exit(1)
 
 
-def print_result(res, out_format, in_format, search, out_file):
+def print_result(res, out_format, in_format, search, out_file, mode="w+"):
     if out_format is None:
         if isinstance(res, (list, str, int, float)) or in_format is None:
             out_format = "newline"
@@ -213,8 +232,8 @@ def print_result(res, out_format, in_format, search, out_file):
         print("Supported formats are: {format}".format(",".join(VALID_PRINTERS)))
     else:
         if out_file:
-            with open(out_file, "w+") as f:
-                f.write(output)
+            with open(out_file, mode) as f:
+                f.write(f"{output}\n")
         else:
             print(output)
 
@@ -266,3 +285,10 @@ def main():
         out_file = infilename
 
     print_result(result, out_format, in_format, search, out_file)
+
+    additional_objects = args.additional_objects
+    if additional_objects:
+        for el in additional_objects:
+            result = get(data, el, silent)
+
+            print_result(result, out_format, in_format, search, out_file, mode="+a")

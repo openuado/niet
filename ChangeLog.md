@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+Not yet released
+----------------
+
+* [feature] Introduce the `additional-objects` parameter to allow multi researches
+
 3.1.0
 -----
 
