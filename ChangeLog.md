@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-Not yet released
-----------------
+3.2.0
+-----
 
 * [feature] Introduce the `additional-objects` parameter to allow multi researches
 
@@ -10,7 +10,7 @@ Not yet released
 -----
 
 * [feature] the toml format is now supported by niet (https://github.com/openuado/niet/pull/77)
-* [fix] replace deprecated pkg_resources by importlib.metadata
+* [fix] replace deprecated `pkg_resources` by `importlib.metadata`
 * [CI/CD] move away from travis CI and fix existing github actions
 * [CI/CD] publish to pypi with github actions
 * [CI/CD] introduce black and isort and a couple of new dev tools
