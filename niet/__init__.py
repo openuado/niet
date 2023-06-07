@@ -5,7 +5,6 @@ import sys
 import textwrap
 from importlib.metadata import version as getversion
 
-import pkg_resources
 import pytoml as toml
 import yaml
 from jmespath import search
