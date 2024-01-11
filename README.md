@@ -851,6 +851,29 @@ $ niet . tests/samples/sample_not_indented.json
 }
 ```
 
+### Handle keys that contains dots
+
+You may want to retrieve values from keys that contains dots, example:
+
+```yaml
+.foo:
+  something: "a"
+
+bar:
+  something: "b"
+
+foo.z:
+  something: "c"
+```
+
+Then you must surround keys that contains dots with quotes, example:
+
+```
+$ niet  '".foo"' /tmp/test.yaml
+something: a
+$ niet  '"foo.z"' /tmp/test.yaml
+something: c
+```
 
 ## Tips
 
